@@ -3,6 +3,8 @@ import { getAccounts } from "@/lib/accounts";
 import { getTransactions } from "@/lib/transactions";
 import { calculateAccountBalance } from "@/lib/balances";
 import { getCategories } from "@/lib/categories";
+import { SpendingChart }
+from "@/components/charts/spending-chart";
 
 export default async function HomePage() {
   const accounts = await getAccounts();
@@ -109,9 +111,50 @@ currentMonthTransactions
 const topCategories = Object.entries(
   spendingByCategory
 )
+
+
   .sort((a, b) => b[1] - a[1])
   .slice(0, 5);
+const chartData =
+  topCategories.map(
+    ([name, amount]) => ({
+      name,
+      amount,
+    })
+  );
 
+  const biggestCategory =
+  topCategories.length > 0
+    ? topCategories[0]
+    : null;
+
+const expenseTransactions =
+  currentMonthTransactions.filter(
+    (t) =>
+      t.transaction_type ===
+      "expense"
+  );
+
+const largestExpense =
+  expenseTransactions.length > 0
+    ? expenseTransactions.reduce(
+        (largest, current) =>
+          Number(current.amount) >
+          Number(largest.amount)
+            ? current
+            : largest
+      )
+    : null;
+
+const averageExpense =
+  expenseTransactions.length > 0
+    ? expenseTransactions.reduce(
+        (sum, t) =>
+          sum + Number(t.amount),
+        0
+      ) /
+      expenseTransactions.length
+    : 0;
   const cashAvailable = accounts
   .filter((account) => account.include_in_cash)
   .reduce((totalCash, account) => {
@@ -285,6 +328,77 @@ const netWorth =
       )}
     </div>
   )}
+</div>
+
+<div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+  <h2 className="text-xl font-semibold mb-4">
+    Spending Breakdown
+  </h2>
+
+  <SpendingChart
+    data={chartData}
+  />
+</div>
+
+<div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+  <h2 className="text-xl font-semibold mb-4">
+    Spending Insights
+  </h2>
+
+  <div className="grid gap-4 md:grid-cols-4">
+
+    <div>
+      <p className="text-zinc-500 text-sm">
+        Top Category
+      </p>
+
+      <p className="font-bold text-lg">
+        {biggestCategory?.[0] ??
+          "-"}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-zinc-500 text-sm">
+        Largest Expense
+      </p>
+
+      <p className="font-bold text-lg">
+        ₹
+        {largestExpense
+          ? Number(
+              largestExpense.amount
+            ).toLocaleString()
+          : "0"}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-zinc-500 text-sm">
+        Transactions
+      </p>
+
+      <p className="font-bold text-lg">
+        {
+          currentMonthTransactions.length
+        }
+      </p>
+    </div>
+
+    <div>
+      <p className="text-zinc-500 text-sm">
+        Avg Expense
+      </p>
+
+      <p className="font-bold text-lg">
+        ₹
+        {Math.round(
+          averageExpense
+        ).toLocaleString()}
+      </p>
+    </div>
+
+  </div>
 </div>
         <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
           <h2 className="text-xl font-semibold mb-4">
