@@ -19,6 +19,10 @@ export async function createTransaction(
     "categoryId"
   ) as string;
 
+  const transferAccountId = formData.get(
+  "transferAccountId"
+) as string;
+
   const transactionType = formData.get(
     "transactionType"
   ) as string;
@@ -39,9 +43,20 @@ if (!accountId) {
   );
 }
 
-if (!categoryId) {
+if (
+  transactionType === "transfer" &&
+  !transferAccountId
+) {
   throw new Error(
-    "Category is required"
+    "Destination account required"
+  );
+}
+if (
+  transactionType === "expense" &&
+  !categoryId
+) {
+  throw new Error(
+    "Category is required for expenses"
   );
 }
 
@@ -57,12 +72,22 @@ if (!categoryId) {
 
       account_id: accountId,
 
-      category_id: categoryId,
+      transfer_account_id:
+  transactionType === "transfer"
+    ? transferAccountId
+    : null,
+
+      category_id:
+  transactionType === "expense"
+    ? categoryId
+    : null,
 
       transaction_type: transactionType,
 
       transaction_date:
-        new Date().toISOString(),
+  new Date()
+    .toISOString()
+    .split("T")[0],
     });
 
   if (error) {

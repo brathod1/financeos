@@ -1,7 +1,7 @@
 
 import { getAccounts } from "@/lib/accounts";
 import { getTransactions } from "@/lib/transactions";
-
+import { calculateAccountBalance } from "@/lib/balances";
 export default async function HomePage() {
   const accounts = await getAccounts();
   const transactions = await getTransactions();
@@ -9,35 +9,16 @@ export default async function HomePage() {
   const cashAvailable = accounts
   .filter((account) => account.include_in_cash)
   .reduce((totalCash, account) => {
-    let balance = Number(account.starting_balance);
-
-    transactions
-      .filter(
-        (transaction) =>
-          transaction.account_id === account.id
-      )
-      .forEach((transaction) => {
-        const amount = Number(transaction.amount);
-
-        if (transaction.transaction_type === "expense") {
-          balance -= amount;
-        }
-
-        if (transaction.transaction_type === "income") {
-          balance += amount;
-        }
-
-        if (transaction.transaction_type === "investment") {
-          balance -= amount;
-        }
-
-        if (transaction.transaction_type === "transfer") {
-          balance -= amount;
-        }
-      });
+    const balance = calculateAccountBalance(
+      account.id,
+      Number(account.starting_balance),
+      transactions
+    );
 
     return totalCash + balance;
   }, 0);
+
+   
 
 const moneyInvested = transactions
 
@@ -121,40 +102,11 @@ const netWorth =
 
           <div className="space-y-3">
             {accounts.map((account) => {
-  let balance = Number(account.starting_balance);
-
+  const balance = calculateAccountBalance(
+  account.id,
+  Number(account.starting_balance),
   transactions
-  .filter(
-    (transaction) =>
-      transaction.account_id === account.id
-  )
-  .forEach((transaction) => {
-    const amount = Number(transaction.amount);
-
-    if (
-      transaction.transaction_type === "expense"
-    ) {
-      balance -= amount;
-    }
-
-    if (
-      transaction.transaction_type === "income"
-    ) {
-      balance += amount;
-    }
-
-    if (
-      transaction.transaction_type === "investment"
-    ) {
-      balance -= amount;
-    }
-
-    if (
-      transaction.transaction_type === "transfer"
-    ) {
-      balance -= amount;
-    }
-  });
+);
 
   return (
     <div
