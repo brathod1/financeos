@@ -7,7 +7,8 @@ import {
   TrendingUp,
   Target,
   BarChart3,
-  Settings
+  Settings,
+  Tag
 } from "lucide-react";
 
 const items = [
@@ -26,6 +27,11 @@ const items = [
     href: "/transactions",
     icon: ArrowLeftRight,
   },
+  {
+  label: "Categories",
+  href: "/categories",
+  icon: Tag,
+},
   {
     label: "Budgets",
     href: "/budgets",

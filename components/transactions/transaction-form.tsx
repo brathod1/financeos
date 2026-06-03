@@ -2,7 +2,7 @@
 "use client";
 
 import { createTransaction } from "@/app/actions/transactions";
-import { Account } from "@/types/account";
+import { Account } from "@/types/accounts";
 import { Category } from "@/types/category";
 import { useState } from "react";
 
@@ -18,12 +18,15 @@ export function TransactionForm({
   const [transactionType, setTransactionType] =
     useState("expense");
 
-  const filteredCategories =
-    categories.filter(
-      (category) =>
-        category.category_type ===
-        transactionType
-    );
+  const filteredCategories = categories
+  .filter(
+    (category) =>
+      category.category_type ===
+      transactionType
+  )
+  .sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
 
   return (
     <div className="max-w-2xl">
@@ -148,8 +151,7 @@ export function TransactionForm({
         )}
 
         {transactionType !== "transfer" &&
-          transactionType !==
-            "investment" && (
+          (
             <div>
               <label className="block mb-2">
                 Category

@@ -2,9 +2,115 @@
 import { getAccounts } from "@/lib/accounts";
 import { getTransactions } from "@/lib/transactions";
 import { calculateAccountBalance } from "@/lib/balances";
+import { getCategories } from "@/lib/categories";
+
 export default async function HomePage() {
   const accounts = await getAccounts();
   const transactions = await getTransactions();
+  const categories = await getCategories();
+  const now = new Date();
+
+const currentMonthTransactions =
+  transactions.filter((transaction) => {
+    const date = new Date(
+      transaction.transaction_date
+    );
+
+    return (
+      date.getMonth() ===
+        now.getMonth() &&
+      date.getFullYear() ===
+        now.getFullYear()
+    );
+  });
+
+  const monthlyIncome =
+  currentMonthTransactions
+    .filter(
+      (transaction) =>
+        transaction.transaction_type ===
+        "income"
+    )
+    .reduce(
+      (sum, transaction) =>
+        sum +
+        Number(transaction.amount),
+      0
+    );
+
+const monthlyExpenses =
+  currentMonthTransactions
+    .filter(
+      (transaction) =>
+        transaction.transaction_type ===
+        "expense"
+    )
+    .reduce(
+      (sum, transaction) =>
+        sum +
+        Number(transaction.amount),
+      0
+    );
+
+
+const monthlyInvestments =
+  currentMonthTransactions
+    .filter(
+      (transaction) =>
+        transaction.transaction_type ===
+        "investment"
+    )
+    .reduce(
+      (sum, transaction) =>
+        sum +
+        Number(transaction.amount),
+      0
+    );
+
+const monthlySavings =
+  monthlyIncome -
+  monthlyExpenses -
+  monthlyInvestments;
+
+const monthlyExpenseTransactions =
+  currentMonthTransactions.filter(
+    (transaction) =>
+      transaction.transaction_type ===
+      "expense"
+  );
+
+const spendingByCategory: Record<
+  string,
+  number
+> = {};
+
+currentMonthTransactions
+  .filter(
+    (transaction) =>
+      transaction.transaction_type ===
+      "expense"
+  )
+  .forEach((transaction) => {
+    const category = categories.find(
+      (c) =>
+        c.id === transaction.category_id
+    );
+
+    const categoryName =
+      category?.name ?? "Uncategorized";
+
+    spendingByCategory[categoryName] =
+      (spendingByCategory[
+        categoryName
+      ] ?? 0) +
+      Number(transaction.amount);
+  });
+
+const topCategories = Object.entries(
+  spendingByCategory
+)
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 5);
 
   const cashAvailable = accounts
   .filter((account) => account.include_in_cash)
@@ -96,7 +202,90 @@ const netWorth =
             </h2>
           </div>
         </div>
+      <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+  <h2 className="text-xl font-semibold mb-6">
+    This Month
+  </h2>
 
+  <div className="grid gap-4 md:grid-cols-4">
+
+    <div>
+      <p className="text-zinc-500 text-sm">
+        Income
+      </p>
+
+      <p className="text-green-500 text-2xl font-bold">
+        ₹{monthlyIncome.toLocaleString()}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-zinc-500 text-sm">
+        Expenses
+      </p>
+
+      <p className="text-red-500 text-2xl font-bold">
+        ₹{monthlyExpenses.toLocaleString()}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-zinc-500 text-sm">
+        Investments
+      </p>
+
+      <p className="text-blue-500 text-2xl font-bold">
+        ₹{monthlyInvestments.toLocaleString()}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-zinc-500 text-sm">
+        Savings
+      </p>
+
+      <p
+        className={`text-2xl font-bold ${
+          monthlySavings >= 0
+            ? "text-green-500"
+            : "text-red-500"
+        }`}
+      >
+        ₹{monthlySavings.toLocaleString()}
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+  <h2 className="text-xl font-semibold mb-4">
+    Top Spending Categories
+  </h2>
+
+  {topCategories.length === 0 ? (
+    <p className="text-zinc-500">
+      No expenses this month
+    </p>
+  ) : (
+    <div className="space-y-3">
+      {topCategories.map(
+        ([name, amount]) => (
+          <div
+            key={name}
+            className="flex justify-between border-b border-zinc-800 pb-2"
+          >
+            <span>{name}</span>
+
+            <span className="text-red-500 font-medium">
+              ₹{amount.toLocaleString()}
+            </span>
+          </div>
+        )
+      )}
+    </div>
+  )}
+</div>
         <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
           <h2 className="text-xl font-semibold mb-4">
             Accounts

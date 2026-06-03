@@ -93,3 +93,35 @@ export async function updateAccount(
   revalidatePath("/accounts");
   revalidatePath("/");
 }
+
+export async function deleteAccount(
+  formData: FormData
+) {
+  const id = formData.get("id") as string;
+
+  const { count } = await supabase
+    .from("transactions")
+    .select("*", {
+      count: "exact",
+      head: true,
+    })
+    .eq("account_id", id);
+
+  if ((count ?? 0) > 0) {
+    throw new Error(
+      "Cannot delete account with transactions"
+    );
+  }
+
+  const { error } = await supabase
+    .from("accounts")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    throw error;
+  }
+
+  revalidatePath("/accounts");
+  revalidatePath("/");
+}

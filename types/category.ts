@@ -7,5 +7,13 @@ export interface Category {
 
   category_type: string;
 
+  color: string | null;
+
+  icon: string | null;
+
+  sort_order: number;
+
+  is_archived: boolean;
+
   created_at: string;
 }

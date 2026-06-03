@@ -2,6 +2,7 @@
 
 import { Account } from "@/types/accounts";
 import { updateAccount } from "@/app/actions/accounts";
+import { deleteAccount } from "@/app/actions/accounts";
 import {
   Dialog,
   DialogContent,
@@ -29,16 +30,16 @@ export function EditAccountForm({
       </Button>
     </DialogTrigger>
 
-    <DialogContent>
+    <DialogContent className="bg-zinc-900 text-white border-zinc-800 max-w-lg">
       <DialogHeader>
-        <DialogTitle>
+        <DialogTitle className="text-white">
           Edit Account
         </DialogTitle>
       </DialogHeader>
 
       <form
         action={updateAccount}
-        className="space-y-4"
+        className="space-y-6"
       >
         <input
           type="hidden"
@@ -49,13 +50,13 @@ export function EditAccountForm({
         <input
           name="name"
           defaultValue={account.name}
-          className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4"
+          className="w-full bg-zinc-800 text-white border border-zinc-700 rounded-xl p-4"
         />
 
         <select
           name="accountType"
           defaultValue={account.account_type}
-          className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4"
+          className="w-full bg-zinc-800 text-white border border-zinc-700 rounded-xl p-4"
         >
           <option value="checking">
             Checking
@@ -76,10 +77,10 @@ export function EditAccountForm({
           defaultValue={
             account.starting_balance
           }
-          className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4"
+          className="w-full bg-zinc-800 text-white border border-zinc-700 rounded-xl p-4"
         />
 
-        <label className="flex gap-2">
+        <label className="flex gap-2 text-white">
           <input
             type="checkbox"
             name="includeInCash"
@@ -91,7 +92,7 @@ export function EditAccountForm({
           Include In Cash
         </label>
 
-        <label className="flex gap-2">
+        <label className="flex gap-2 text-white">
           <input
             type="checkbox"
             name="includeInNetWorth"
@@ -103,11 +104,15 @@ export function EditAccountForm({
           Include In Net Worth
         </label>
 
-        <Button type="submit">
-          Save Changes
-        </Button>
+        <div className="flex gap-2">
+  <Button type="submit"
+        className="w-full">
+    Save Changes
+  </Button>
+  
+</div>
       </form>
-    </DialogContent>
+    </DialogContent >
   </Dialog>
   );
 }
