@@ -1,7 +1,9 @@
 import { getAccounts } from "@/lib/accounts";
+import { getTransactions } from "@/lib/transactions";
 
 export default async function HomePage() {
   const accounts = await getAccounts();
+  const transactions = await getTransactions();
 
   const cashAvailable = accounts
     .filter((a) => a.include_in_cash)
@@ -59,29 +61,52 @@ export default async function HomePage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl p-6 shadow">
-        <h2 className="text-xl font-semibold mb-4">
-          Accounts
-        </h2>
+      <>
+  <div className="bg-white rounded-xl p-6 shadow mb-6">
+    <h2 className="text-xl font-semibold mb-4">
+      Accounts
+    </h2>
 
-        <div className="space-y-2">
-          {accounts.map((account) => (
-            <div
-              key={account.id}
-              className="flex justify-between border-b pb-2"
-            >
-              <span>{account.name}</span>
+    <div className="space-y-2">
+      {accounts.map((account) => (
+        <div
+          key={account.id}
+          className="flex justify-between border-b pb-2"
+        >
+          <span>{account.name}</span>
 
-              <span>
-                ₹
-                {Number(
-                  account.starting_balance
-                ).toLocaleString()}
-              </span>
-            </div>
-          ))}
+          <span>
+            ₹
+            {Number(
+              account.starting_balance
+            ).toLocaleString()}
+          </span>
         </div>
-      </div>
+      ))}
+    </div>
+  </div>
+
+  <div className="bg-white rounded-xl p-6 shadow">
+    <h2 className="text-xl font-semibold mb-4">
+      Recent Transactions
+    </h2>
+
+    <div className="space-y-2">
+      {transactions.map((transaction) => (
+        <div
+          key={transaction.id}
+          className="flex justify-between border-b pb-2"
+        >
+          <span>{transaction.title}</span>
+
+          <span>
+            ₹{Number(transaction.amount).toLocaleString()}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</>
     </main>
   );
 }
