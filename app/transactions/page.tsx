@@ -1,5 +1,5 @@
 import { getTransactions } from "@/lib/transactions";
-
+import { EditTransactionForm } from "@/components/transactions/edit-transaction-form";
 export default async function TransactionsPage() {
   const transactions = await getTransactions();
   const totalIncome = transactions
@@ -134,28 +134,30 @@ const totalTransfers = transactions
   ).toLocaleDateString()}
 </p>
 </div>
-
+    
+    <div className="flex items-center gap-3">
+  <EditTransactionForm
+    transaction={transaction}
+  />
             <p
-  className={`font-bold ${
-    transaction.transaction_type === "income"
-      ? "text-green-500"
-      : transaction.transaction_type ===
-        "expense"
-      ? "text-red-500"
-      : transaction.transaction_type ===
-        "investment"
-      ? "text-blue-500"
-      : "text-yellow-500"
-  }`}
->
-  {transaction.transaction_type ===
-"income"
-  ? "+"
-  : "-"}
-₹{Number(
-  transaction.amount
-).toLocaleString()}
-</p>
+    className={`font-bold ${
+      transaction.transaction_type ===
+      "income"
+        ? "text-green-500"
+        : transaction.transaction_type ===
+          "expense"
+        ? "text-red-500"
+        : transaction.transaction_type ===
+          "investment"
+        ? "text-blue-500"
+        : "text-yellow-500"
+    }`}
+  >
+    ₹{Number(
+      transaction.amount
+    ).toLocaleString()}
+  </p>
+</div>
           </div>
                 ))
       )}

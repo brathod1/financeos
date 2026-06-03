@@ -1,7 +1,7 @@
 "use server";
 
 import { supabase } from "@/supabase/client";
-
+import { redirect } from "next/navigation";
 export async function createTransaction(
   formData: FormData
 ) {
@@ -93,4 +93,73 @@ if (
   if (error) {
     console.error(error);
   }
+}
+
+import { revalidatePath } from "next/cache";
+
+export async function updateTransaction(
+  formData: FormData
+) {
+  const id = formData.get("id") as string;
+
+  const title = formData.get(
+    "title"
+  ) as string;
+  
+  const transactionType =
+  formData.get(
+    "transactionType"
+  ) as string;
+
+const transactionDate =
+  formData.get(
+    "transactionDate"
+  ) as string;
+  const amount = Number(
+    formData.get("amount")
+  );
+
+  const { error } = await supabase
+    .from("transactions")
+    .update({
+  title,
+  amount,
+  transaction_type:
+    transactionType,
+  transaction_date:
+    transactionDate,
+})
+    .eq("id", id);
+
+  if (error) {
+    throw error;
+  }
+
+  revalidatePath("/transactions");
+  revalidatePath("/");
+  redirect("/transactions");
+}
+
+export async function deleteTransaction(
+  formData: FormData
+) {
+  const id = formData.get("id") as string;
+
+  const { error } = await supabase
+    .from("transactions")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+  console.error(
+    "Delete transaction error:",
+    error
+  );
+
+  throw error;
+}
+
+  revalidatePath("/transactions");
+  revalidatePath("/");
+  redirect("/transactions");
 }
