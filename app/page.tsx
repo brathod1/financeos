@@ -9,6 +9,8 @@ export default async function HomePage() {
   const cashAvailable = accounts
   .filter((account) => account.include_in_cash)
   .reduce((totalCash, account) => {
+    
+    
     const balance = calculateAccountBalance(
       account.id,
       Number(account.starting_balance),
@@ -101,26 +103,30 @@ const netWorth =
           </h2>
 
           <div className="space-y-3">
-            {accounts.map((account) => {
-  const balance = calculateAccountBalance(
-  account.id,
-  Number(account.starting_balance),
-  transactions
-);
+  {accounts.map((account) => {
+    const balance =
+      account.account_type === "investment"
+        ? Number(account.starting_balance)
+        : calculateAccountBalance(
+            account.id,
+            Number(account.starting_balance),
+            transactions
+          );
 
-  return (
-    <div
-      key={account.id}
-      className="flex justify-between border-b border-zinc-800 pb-3"
-    >
-      <span>{account.name}</span>
 
-      <span>
-        ₹{balance.toLocaleString()}
-      </span>
-    </div>
-  );
-})}
+            return (
+              <div
+                key={account.id}
+                className="flex justify-between border-b border-zinc-800 pb-3"
+              >
+                <span>{account.name}</span>
+
+                <span>
+                  ₹{balance.toLocaleString()}
+                </span>
+              </div>
+            );
+          })}
           </div>
         </div>
 

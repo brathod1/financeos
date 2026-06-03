@@ -1,7 +1,11 @@
 import { getAccounts } from "@/lib/accounts";
-
+import { AddAccountForm } from "@/components/accounts/add-account-form";
+import { getTransactions } from "@/lib/transactions";
+import { calculateAccountBalance } from "@/lib/balances";
+import { EditAccountForm } from "@/components/accounts/edit-account-form";
 export default async function AccountsPage() {
   const accounts = await getAccounts();
+const transactions = await getTransactions();
 
   return (
     <div className="space-y-8">
@@ -16,9 +20,7 @@ export default async function AccountsPage() {
           </h1>
         </div>
 
-        <button className="bg-white text-black px-5 py-3 rounded-full font-medium">
-          + Add Account
-        </button>
+        <AddAccountForm />
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
@@ -36,8 +38,19 @@ export default async function AccountsPage() {
             </h2>
 
             <p className="text-4xl font-bold mt-6">
-              ₹{Number(account.starting_balance).toLocaleString()}
-            </p>
+  ₹{
+    (
+      account.account_type === "investment"
+        ? Number(account.starting_balance)
+        : calculateAccountBalance(
+            account.id,
+            Number(account.starting_balance),
+            transactions
+          )
+    ).toLocaleString()
+  }
+</p>
+<EditAccountForm account={account} />
           </div>
         ))}
       </div>
