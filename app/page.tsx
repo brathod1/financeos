@@ -1,65 +1,198 @@
-import Image from "next/image";
 
-export default function Home() {
+import { getAccounts } from "@/lib/accounts";
+import { getTransactions } from "@/lib/transactions";
+
+export default async function HomePage() {
+  const accounts = await getAccounts();
+  const transactions = await getTransactions();
+
+  const cashAvailable = accounts
+  .filter((account) => account.include_in_cash)
+  .reduce((totalCash, account) => {
+    let balance = Number(account.starting_balance);
+
+    transactions
+      .filter(
+        (transaction) =>
+          transaction.account_id === account.id
+      )
+      .forEach((transaction) => {
+        const amount = Number(transaction.amount);
+
+        if (transaction.transaction_type === "expense") {
+          balance -= amount;
+        }
+
+        if (transaction.transaction_type === "income") {
+          balance += amount;
+        }
+
+        if (transaction.transaction_type === "investment") {
+          balance -= amount;
+        }
+
+        if (transaction.transaction_type === "transfer") {
+          balance -= amount;
+        }
+      });
+
+    return totalCash + balance;
+  }, 0);
+
+const moneyInvested = transactions
+
+  .filter(
+    (transaction) =>
+      transaction.transaction_type === "investment"
+  )
+  
+  .reduce(
+    (sum, transaction) =>
+      sum + Number(transaction.amount),
+    0
+  );
+
+const portfolioValue = accounts
+  .filter((a) => a.account_type === "investment")
+  .reduce(
+    (sum, a) => sum + Number(a.starting_balance),
+    0
+  );
+
+const netWorth =
+  cashAvailable + portfolioValue;
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    
+      <div className="space-y-8">
+        <div>
+          <p className="text-zinc-400 uppercase tracking-widest text-sm">
+            Overview
           </p>
+
+          <h1 className="text-5xl font-bold mt-2">
+  Finance Dashboard
+</h1>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="grid gap-6 md:grid-cols-4">
+          <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+            <p className="text-zinc-400 text-sm">
+              Net Worth
+            </p>
+
+            <h2 className="text-4xl font-bold mt-4">
+              ₹{netWorth.toLocaleString()}
+            </h2>
+          </div>
+
+          <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+            <p className="text-zinc-400 text-sm">
+              Cash Available
+            </p>
+
+            <h2 className="text-4xl font-bold mt-4">
+              ₹{cashAvailable.toLocaleString()}
+            </h2>
+          </div>
+          <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+  <p className="text-zinc-400 text-sm">
+    Money Invested
+  </p>
+
+  <h2 className="text-4xl font-bold mt-4">
+    ₹{moneyInvested.toLocaleString()}
+  </h2>
+</div>
+          <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+            <p className="text-zinc-400 text-sm">
+              Portfolio Value
+            </p>
+
+            <h2 className="text-4xl font-bold mt-4">
+              ₹{portfolioValue.toLocaleString()}
+            </h2>
+          </div>
         </div>
-      </main>
+
+        <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+          <h2 className="text-xl font-semibold mb-4">
+            Accounts
+          </h2>
+
+          <div className="space-y-3">
+            {accounts.map((account) => {
+  let balance = Number(account.starting_balance);
+
+  transactions
+  .filter(
+    (transaction) =>
+      transaction.account_id === account.id
+  )
+  .forEach((transaction) => {
+    const amount = Number(transaction.amount);
+
+    if (
+      transaction.transaction_type === "expense"
+    ) {
+      balance -= amount;
+    }
+
+    if (
+      transaction.transaction_type === "income"
+    ) {
+      balance += amount;
+    }
+
+    if (
+      transaction.transaction_type === "investment"
+    ) {
+      balance -= amount;
+    }
+
+    if (
+      transaction.transaction_type === "transfer"
+    ) {
+      balance -= amount;
+    }
+  });
+
+  return (
+    <div
+      key={account.id}
+      className="flex justify-between border-b border-zinc-800 pb-3"
+    >
+      <span>{account.name}</span>
+
+      <span>
+        ₹{balance.toLocaleString()}
+      </span>
     </div>
+  );
+})}
+          </div>
+        </div>
+
+        <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+          <h2 className="text-xl font-semibold mb-4">
+            Recent Transactions
+          </h2>
+
+          <div className="space-y-3">
+            {transactions.map((transaction) => (
+              <div
+                key={transaction.id}
+                className="flex justify-between border-b border-zinc-800 pb-3"
+              >
+                <span>{transaction.title}</span>
+
+                <span>
+                  ₹{Number(transaction.amount).toLocaleString()}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    
   );
 }

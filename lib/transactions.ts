@@ -1,6 +1,7 @@
 import { supabase } from "@/supabase/client";
+import { Transaction } from "@/types/transactions";
 
-export async function getTransactions() {
+export async function getTransactions(): Promise<Transaction[]> {
   const { data, error } = await supabase
     .from("transactions")
     .select("*")
@@ -13,5 +14,5 @@ export async function getTransactions() {
     return [];
   }
 
-  return data || [];
+  return (data as Transaction[]) || [];
 }
