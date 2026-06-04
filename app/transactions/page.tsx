@@ -1,7 +1,10 @@
 import { getTransactions } from "@/lib/transactions";
 import { EditTransactionForm } from "@/components/transactions/edit-transaction-form";
+import { TransactionsList } from "@/components/transactions/transactions-list";
+import { getCategories } from "@/lib/categories";
 export default async function TransactionsPage() {
   const transactions = await getTransactions();
+  const categories = await getCategories();
   const totalIncome = transactions
   .filter(
     (transaction) =>
@@ -108,60 +111,10 @@ const totalTransfers = transactions
   </div>
 
 </div>
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl">
-  {transactions.length === 0 ? (
-    <div className="p-10 text-center text-zinc-500">
-      No transactions yet
-    </div>
-  ) : (
-    transactions.map((transaction) => (
-          <div
-            key={transaction.id}
-            className="flex justify-between items-center p-6 border-b border-zinc-800"
-          >
-            <div>
-  <p className="font-medium">
-    {transaction.title}
-  </p>
-
-  <p className="text-sm text-zinc-500">
-  {transaction.transaction_type}
-</p>
-
-<p className="text-xs text-zinc-600">
-  {new Date(
-    transaction.transaction_date
-  ).toLocaleDateString()}
-</p>
-</div>
-    
-    <div className="flex items-center gap-3">
-  <EditTransactionForm
-    transaction={transaction}
-  />
-            <p
-    className={`font-bold ${
-      transaction.transaction_type ===
-      "income"
-        ? "text-green-500"
-        : transaction.transaction_type ===
-          "expense"
-        ? "text-red-500"
-        : transaction.transaction_type ===
-          "investment"
-        ? "text-blue-500"
-        : "text-yellow-500"
-    }`}
-  >
-    ₹{Number(
-      transaction.amount
-    ).toLocaleString()}
-  </p>
-</div>
-          </div>
-                ))
-      )}
-    </div>
+      <TransactionsList
+  transactions={transactions}
+  categories={categories}
+/>
     </div>
   );
 }
