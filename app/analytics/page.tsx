@@ -1,8 +1,9 @@
+console.log("ANALYTICS PAGE");
 import { getTransactions } from "@/lib/transactions";
 import { getBudgets } from "@/lib/budgets";
 import { getCategories } from "@/lib/categories";
 import { IncomeExpenseChart } from "@/components/charts/income-expense-chart";
-
+import { CategorySpendingChart } from "@/components/charts/category-spending-chart";
 export default async function AnalyticsPage() {
   const transactions =
     await getTransactions();
@@ -46,7 +47,42 @@ export default async function AnalyticsPage() {
           100
         ).toFixed(1)
       : "0";
+ const categorySpendingData =
+  categories
+    .filter(
+      (category) =>
+        category.category_type ===
+        "expense"
+    )
+    .map((category) => {
+      const amount =
+        transactions
+          .filter(
+            (transaction) =>
+              transaction.category_id ===
+              category.id
+          )
+          .reduce(
+            (sum, transaction) =>
+              sum +
+              Number(
+                transaction.amount
+              ),
+            0
+          );
 
+      return {
+        category: category.name,
+        amount,
+      };
+    })
+    .filter(
+      (item) => item.amount > 0
+    )
+    .sort(
+      (a, b) =>
+        b.amount - a.amount
+    );
   return (
     <div className="space-y-8">
       <div>
@@ -98,6 +134,16 @@ export default async function AnalyticsPage() {
   <IncomeExpenseChart
     income={totalIncome}
     expenses={totalExpenses}
+  />
+</div>
+
+<div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+  <h2 className="text-xl font-semibold mb-4">
+    Spending By Category
+  </h2>
+
+  <CategorySpendingChart
+    data={categorySpendingData}
   />
 </div>
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">

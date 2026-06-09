@@ -3,6 +3,7 @@
 import { Account } from "@/types/accounts";
 import { updateAccount } from "@/app/actions/accounts";
 import { deleteAccount } from "@/app/actions/accounts";
+import { Pencil } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -23,9 +24,15 @@ export function EditAccountForm({
     <Dialog>
     <DialogTrigger asChild>
       <Button
-        variant="outline"
-        className="mt-4"
-      >
+  variant="outline"
+  className="
+  mt-4
+  rounded-full
+  border-white/10
+  bg-white/5
+  hover:bg-white/10
+  "
+>
         ✏️ Edit
       </Button>
     </DialogTrigger>

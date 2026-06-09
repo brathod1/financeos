@@ -33,7 +33,7 @@ export function IncomeExpenseChart({
     <div className="h-80">
       <ResponsiveContainer
         width="100%"
-        height="100%"
+        height={300}
       >
         <BarChart data={data}>
           <XAxis dataKey="name" />

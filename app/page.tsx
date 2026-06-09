@@ -1,14 +1,28 @@
-
+console.log("DASHBOARD PAGE");
 import { getAccounts } from "@/lib/accounts";
 import { getTransactions } from "@/lib/transactions";
 import { calculateAccountBalance } from "@/lib/balances";
 import { getCategories } from "@/lib/categories";
 import { SpendingChart }
+
 from "@/components/charts/spending-chart";
+import { getPortfolioValue }
+from "@/lib/portfolio";
 
 export default async function HomePage() {
   const accounts = await getAccounts();
   const transactions = await getTransactions();
+  console.log(
+  "DASHBOARD TRANSACTIONS:",
+  transactions.length
+);
+
+console.log(
+  transactions.map((t) => ({
+    title: t.title,
+    user: t.user_id,
+  }))
+);
   const categories = await getCategories();
   const now = new Date();
 
@@ -184,68 +198,128 @@ const moneyInvested = transactions
     0
   );
 
-const portfolioValue = accounts
-  .filter((a) => a.account_type === "investment")
-  .reduce(
-    (sum, a) => sum + Number(a.starting_balance),
-    0
-  );
+const portfolioValue =
+  await getPortfolioValue();
 
 const netWorth =
   cashAvailable + portfolioValue;
   return (
     
-      <div className="space-y-8">
-        <div>
-          <p className="text-zinc-400 uppercase tracking-widest text-sm">
-            Overview
-          </p>
+      <div className="space-y-10 max-w-7xl mx-auto">
+        <div className="mb-8">
+  <p className="text-zinc-500 uppercase tracking-[0.3em] text-xs">
+    PERSONAL FINANCE OS
+  </p>
 
-          <h1 className="text-5xl font-bold mt-2">
-  Finance Dashboard
+  <h1 className="text-7xl font-bold tracking-tight mt-4">
+  Good to see you 👋
 </h1>
-        </div>
+
+  <p className="text-zinc-500 text-lg mt-4">
+    Here's your financial overview.
+  </p>
+</div>
 
         <div className="grid gap-6 md:grid-cols-4">
-          <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
-            <p className="text-zinc-400 text-sm">
+          <div
+  className="
+  bg-[#0F1117]
+  rounded-[32px]
+  p-8
+  border
+  border-white/5
+  min-h-[220px]
+  flex
+  flex-col
+  justify-between
+"
+>
+            <p className="text-zinc-500 uppercase tracking-[0.2em] text-xs">
               Net Worth
             </p>
 
-            <h2 className="text-4xl font-bold mt-4">
+            <h2 className="text-6xl font-bold tracking-tight">
               ₹{netWorth.toLocaleString()}
             </h2>
           </div>
 
-          <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
-            <p className="text-zinc-400 text-sm">
+          <div
+  className="
+  bg-[#0F1117]
+  rounded-[32px]
+  p-8
+  border
+  border-white/5
+  min-h-[220px]
+  flex
+  flex-col
+  justify-between
+"
+>
+            <p className="text-zinc-500 uppercase tracking-[0.2em] text-xs">
               Cash Available
             </p>
 
-            <h2 className="text-4xl font-bold mt-4">
+            <h2 className="text-6xl font-bold tracking-tight">
               ₹{cashAvailable.toLocaleString()}
             </h2>
           </div>
-          <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
-  <p className="text-zinc-400 text-sm">
+          <div
+  className="
+  bg-[#0F1117]
+  rounded-[32px]
+  p-8
+  border
+  border-white/5
+  min-h-[220px]
+  flex
+  flex-col
+  justify-between
+"
+>
+  <p className="text-zinc-500 uppercase tracking-[0.2em] text-xs">
     Money Invested
   </p>
 
-  <h2 className="text-4xl font-bold mt-4">
+  <h2 className="text-6xl font-bold tracking-tight">
     ₹{moneyInvested.toLocaleString()}
   </h2>
 </div>
-          <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
-            <p className="text-zinc-400 text-sm">
+          <div
+  className="
+  bg-[#0F1117]
+  rounded-[32px]
+  p-8
+  border
+  border-white/5
+  min-h-[220px]
+  flex
+  flex-col
+  justify-between
+"
+>
+            <p className="text-zinc-500 uppercase tracking-[0.2em] text-xs">
               Portfolio Value
             </p>
 
-            <h2 className="text-4xl font-bold mt-4">
+            <h2 className="text-6xl font-bold tracking-tight">
               ₹{portfolioValue.toLocaleString()}
             </h2>
           </div>
         </div>
-      <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+      <div
+  className="
+  bg-[#0F1117]
+  rounded-[32px]
+  p-8
+  border
+  border-white/5
+  min-h-[220px]
+  flex
+  flex-col
+  justify-between
+"
+>
   <h2 className="text-xl font-semibold mb-6">
     This Month
   </h2>
@@ -408,13 +482,11 @@ const netWorth =
           <div className="space-y-3">
   {accounts.map((account) => {
     const balance =
-      account.account_type === "investment"
-        ? Number(account.starting_balance)
-        : calculateAccountBalance(
-            account.id,
-            Number(account.starting_balance),
-            transactions
-          );
+  calculateAccountBalance(
+    account.id,
+    Number(account.starting_balance),
+    transactions
+  );
 
 
             return (

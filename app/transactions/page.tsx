@@ -50,24 +50,34 @@ const totalTransfers = transactions
   );
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-zinc-400 uppercase tracking-widest text-sm">
-            Activity
-          </p>
+      <div className="flex items-center justify-between mb-10">
 
-          <h1 className="text-5xl font-bold mt-2">
-            Transactions
-          </h1>
-        </div>
+  <div>
+    <p className="text-zinc-500 uppercase tracking-[0.3em] text-xs">
+      ACTIVITY
+    </p>
 
-        <a
-  href="/transactions/new"
-  className="bg-white text-black px-5 py-3 rounded-full font-medium"
->
-  + Add
-</a>
-      </div>
+    <h1 className="text-7xl font-bold tracking-tight mt-4">
+      Transactions
+    </h1>
+  </div>
+
+  <a
+    href="/transactions/new"
+    className="
+      bg-white
+      text-black
+      px-8
+      py-4
+      rounded-full
+      font-medium
+      text-lg
+    "
+  >
+    + Add
+  </a>
+
+</div>
 <div className="grid gap-6 md:grid-cols-4">
 
   <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">

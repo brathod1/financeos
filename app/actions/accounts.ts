@@ -1,6 +1,7 @@
 "use server";
 
 import { supabase } from "@/supabase/client";
+import { createClient } from "@/supabase/server";
 import { revalidatePath } from "next/cache";
 
 export async function createAccount(
@@ -23,11 +24,29 @@ export async function createAccount(
     formData.get("includeInNetWorth") ===
     "on";
 
-  const { error } = await supabase
-    .from("accounts")
-    .insert({
-      user_id:
-        "00000000-0000-0000-0000-000000000001",
+  const authSupabase =
+  await createClient();
+
+const {
+  data: { user },
+} = await authSupabase.auth.getUser();
+
+console.log(
+  "USER:",
+  user
+);
+
+if (!user) {
+  console.log(
+    "AUTH FAILED"
+  );
+  return;
+}
+
+const { error } = await supabase
+  .from("accounts")
+  .insert({
+    user_id: user.id,
 
       name,
 

@@ -1,6 +1,7 @@
 "use server";
 
 import { supabase } from "@/supabase/client";
+import { createClient } from "@/supabase/server";
 import { revalidatePath } from "next/cache";
 
 export async function createBudget(
@@ -9,7 +10,19 @@ export async function createBudget(
   const categoryId = formData.get(
     "categoryId"
   ) as string;
+const authSupabase =
+  await createClient();
 
+const {
+  data: { user },
+} =
+  await authSupabase.auth.getUser();
+
+if (!user) {
+  throw new Error(
+    "Not authenticated"
+  );
+}
   const monthlyLimit = Number(
     formData.get("monthlyLimit")
   );
@@ -17,8 +30,7 @@ export async function createBudget(
   const { error } = await supabase
     .from("budgets")
     .insert({
-      user_id:
-        "00000000-0000-0000-0000-000000000001",
+      user_id: user.id,
       category_id: categoryId,
       monthly_limit: monthlyLimit,
     });

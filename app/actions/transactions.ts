@@ -1,6 +1,7 @@
 "use server";
 
 import { supabase } from "@/supabase/client";
+import { createClient } from "@/supabase/server";
 import { redirect } from "next/navigation";
 export async function createTransaction(
   formData: FormData
@@ -59,12 +60,23 @@ if (
     "Category is required for expenses"
   );
 }
+const authSupabase =
+  await createClient();
+
+const {
+  data: { user },
+} = await authSupabase.auth.getUser();
+
+if (!user) {
+  throw new Error(
+    "Not authenticated"
+  );
+}
 
   const { error } = await supabase
     .from("transactions")
     .insert({
-      user_id:
-        "00000000-0000-0000-0000-000000000001",
+      user_id: user.id,
 
       title,
 

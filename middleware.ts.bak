@@ -1,0 +1,55 @@
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+export function middleware(
+  request: NextRequest
+) {
+  const pathname =
+    request.nextUrl.pathname;
+
+  const hasSession =
+    request.cookies
+      .getAll()
+      .some((cookie) =>
+        cookie.name.startsWith("sb-")
+      );
+
+  const publicRoutes = [
+    "/login",
+    "/auth/callback",
+  ];
+
+  const isPublicRoute =
+    publicRoutes.some(
+      (route) =>
+        pathname.startsWith(route)
+    );
+
+  // Not logged in
+  if (
+    !hasSession &&
+    !isPublicRoute
+  ) {
+    return NextResponse.redirect(
+      new URL("/login", request.url)
+    );
+  }
+
+  // Already logged in
+  if (
+    hasSession &&
+    pathname === "/login"
+  ) {
+    return NextResponse.redirect(
+      new URL("/", request.url)
+    );
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: [
+    "/((?!_next|favicon.ico).*)",
+  ],
+};
