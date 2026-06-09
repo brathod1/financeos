@@ -37,6 +37,9 @@ const {
       <body className="bg-black text-white">
         {user ? (
   <div className="flex min-h-screen">
+    <div className="fixed top-4 left-4 z-50 bg-red-500 text-white p-2">
+  TEST SIDEBAR
+</div>
     <Sidebar />
 
     <main className="flex-1 bg-[#050505] p-10">
