@@ -56,9 +56,8 @@ const items = [
 ];
 
 import { createClient } from "@/supabase/server";
-import { signOut } from "@/app/actions/auth";
-import { deleteAccount } from "@/app/actions/delete-accounts";
-import { DeleteDataButton } from "@/components/auth/delete-data-buttons";
+
+
 export async function Sidebar() {
     console.log("SIDEBAR RENDERED");
     const supabase = await createClient();
@@ -68,26 +67,27 @@ const {
 } = await supabase.auth.getUser();
   return (
     <aside
-      className="
-      w-72
-      bg-black
-      border-r
-      border-white/5
-      min-h-screen
-      px-4
-      py-6
-      flex
-      flex-col
-      "
-    >
+  className="
+    hidden
+    md:flex
+    w-72
+    bg-black
+    border-r
+    border-white/5
+    min-h-screen
+    px-4
+    py-6
+    flex-col
+  "
+>
       <div className="px-4 mb-10">
-        <p className="text-zinc-500 uppercase tracking-[0.3em] text-xs">
-          Personal Finance
-        </p>
+        <h1 className="text-3xl font-bold">
+  North
+</h1>
 
-        <h1 className="text-3xl font-bold mt-3">
-          FinanceOS
-        </h1>
+<p className="text-zinc-500 mt-2 text-sm">
+  Track. Plan. Grow.
+</p>
       </div>
 
       <nav className="space-y-2">
@@ -183,29 +183,19 @@ const {
       </div>
     </div>
 
-    <div className="space-y-1">
-      <form action={signOut}>
-        <button
-          className="
-            w-full
-            text-left
-            px-3
-            py-2
-            rounded-xl
-            text-zinc-400
-            hover:text-white
-            hover:bg-white/5
-            transition
-          "
-        >
-          Logout
-        </button>
-      </form>
-
-      <form action={deleteAccount}>
-  <DeleteDataButton />
-</form>
-    </div>
+    <div className="pt-2">
+  <Link
+    href="/settings"
+    className="
+      text-sm
+      text-zinc-500
+      hover:text-white
+      transition
+    "
+  >
+    Manage Account →
+  </Link>
+</div>
   </div>
 )}
 </div>

@@ -13,7 +13,15 @@ export function AddBudgetForm({
   return (
     <form
       action={createBudget}
-      className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4"
+      className="
+bg-zinc-900
+border
+border-zinc-800
+rounded-2xl
+p-4
+md:p-6
+space-y-4
+"
     >
       <select
         name="categoryId"
@@ -38,16 +46,24 @@ export function AddBudgetForm({
       <input
         type="number"
         name="monthlyLimit"
-        placeholder="Monthly Budget"
+        placeholder="Monthly Budget (₹)"
         className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4"
       />
 
       <button
-        type="submit"
-        className="bg-white text-black px-4 py-2 rounded-full"
-      >
-        Add Budget
-      </button>
+  type="submit"
+  className="
+  w-full
+  bg-white
+  text-black
+  px-4
+  py-3
+  rounded-full
+  font-medium
+  "
+>
+  Add Budget
+</button>
     </form>
   );
 }

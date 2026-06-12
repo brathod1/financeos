@@ -15,32 +15,34 @@ if (user) {
     
     <div className="min-h-screen flex items-center justify-center bg-black">
 
-      <div className="text-center">
+      <div className="text-center px-6">
 
         <p className="text-zinc-500 uppercase tracking-[0.3em] text-xs">
-          PERSONAL FINANCE OS
-        </p>
+  TRACK • PLAN • GROW
+</p>
 
         <h1 className="text-7xl font-bold mt-4">
-          FinanceOS
-        </h1>
+  North
+</h1>
 
-        <p className="text-zinc-500 mt-4">
-          Manage your money.
-        </p>
+        <p className="text-zinc-500 mt-4 max-w-md mx-auto">
+  Track spending, plan budgets and grow your wealth.
+</p>
 
         <form action={signInWithGoogle}>
           <button
-            className="
-              mt-8
-              bg-white
-              text-black
-              px-8
-              py-4
-              rounded-full
-              font-medium
-            "
-          >
+  className="
+    mt-8
+    bg-white
+    text-black
+    px-8
+    py-4
+    rounded-full
+    font-medium
+    hover:scale-[1.02]
+    transition-all
+  "
+>
             Continue with Google
           </button>
         </form>

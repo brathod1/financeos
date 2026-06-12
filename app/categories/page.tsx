@@ -47,16 +47,28 @@ export default async function CategoriesPage() {
   return (
     <div className="space-y-10 max-w-7xl mx-auto">
 
-      <div className="flex items-center justify-between">
+      <div
+  className="
+  flex
+  flex-col
+  md:flex-row
+  gap-4
+  md:items-center
+  md:justify-between
+  "
+>
 
         <div>
           <p className="text-zinc-500 uppercase tracking-[0.3em] text-xs">
             TRANSACTION ORGANIZATION
           </p>
 
-          <h1 className="text-7xl font-bold tracking-tight mt-4">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mt-4">
             Categories
           </h1>
+          <p className="text-zinc-500 mt-4">
+  Organize income, expenses and investments.
+</p>
         </div>
 
         <AddCategoryForm />
@@ -126,17 +138,26 @@ function CategorySection({
 
   return (
     <div
-      className="
-      bg-[#0F1117]
-      border
-      border-white/5
-      rounded-[32px]
-      p-8
-      "
-    >
-      <div className="flex items-center justify-between mb-8">
+  className="
+  bg-[#0F1117]
+  border
+  border-white/5
+  rounded-[28px]
+  p-5
+  md:p-8
+  "
+>
+      <div
+  className="
+  flex
+  items-center
+  justify-between
+  mb-5
+  md:mb-8
+  "
+>
 
-        <h2 className="text-3xl font-semibold">
+        <h2 className="text-xl md:text-3xl font-semibold">
           {title}
         </h2>
 
@@ -157,25 +178,35 @@ function CategorySection({
 
       <div className="flex flex-wrap gap-3">
 
-        {categories.map(
-          (category) => (
-            <div
-              key={category.id}
-              className="
-              px-4
-              py-3
-              rounded-2xl
-              bg-white/5
-              border
-              border-white/5
-              "
-            >
-              {category.name}
-            </div>
-          )
-        )}
+  {categories.length === 0 && (
+    <div className="text-zinc-500 text-sm">
+  No categories yet. Create your first category above.
+</div>
+  )}
 
+  {categories.map(
+    (category) => (
+      <div
+        key={category.id}
+        className="
+px-3
+py-2
+rounded-xl
+bg-white/5
+border
+border-white/5
+text-sm
+font-medium
+hover:bg-white/10
+transition
+"
+      >
+        {category.name}
       </div>
+    )
+  )}
+
+</div>
 
     </div>
   );

@@ -20,15 +20,43 @@ export default async function BudgetsPage() {
           Planning
         </p>
 
-        <h1 className="text-5xl font-bold mt-2">
+        <h1 className="text-5xl md:text-7xl font-bold mt-2">
           Budgets
         </h1>
+
+        <p className="text-zinc-500 mt-4">
+  Set monthly spending limits and track progress.
+</p>
       </div>
+      
 
       <AddBudgetForm
         categories={categories}
       />
+{budgets.length === 0 && (
+  <div
+    className="
+    bg-zinc-900
+    border
+    border-zinc-800
+    rounded-2xl
+    p-8
+    text-center
+    "
+  >
+    <div className="text-5xl mb-4">
+      💰
+    </div>
 
+    <h3 className="text-xl font-semibold">
+      No budgets yet
+    </h3>
+
+    <p className="text-zinc-500 mt-2">
+      Create your first budget to start tracking spending.
+    </p>
+  </div>
+)}
       <div className="space-y-4">
         {budgets.map((budget) => {
           const category =
@@ -69,21 +97,43 @@ const percentage =
           return (
             <div
                     key={budget.id}
-  className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6"
+  className="
+bg-[#0F1117]
+border
+border-white/5
+rounded-[32px]
+p-6
+md:p-8
+"
 >
-  <div className="flex justify-between mb-4">
-    <h3 className="font-semibold">
-      {category?.name}
-    </h3>
+  <div
+  className="
+  flex
+  flex-col
+  md:flex-row
+  gap-2
+  md:justify-between
+  mb-4
+  "
+>
+    <div>
+  <p className="text-zinc-500 uppercase text-xs tracking-wider">
+    Category
+  </p>
 
-    <span>
-      ₹
-      {budgetAmount.toLocaleString()}
-    </span>
+  <h3 className="font-semibold mt-1">
+    {category?.name}
+  </h3>
+</div>
+
+    <span className="font-semibold">
+  ₹
+  {budgetAmount.toLocaleString()}
+</span>
   </div>
 
   <div className="space-y-2 text-sm">
-    <div className="flex justify-between">
+    <div className="flex justify-between gap-4">
       <span>Spent</span>
 
       <span>
@@ -91,7 +141,7 @@ const percentage =
       </span>
     </div>
 
-    <div className="flex justify-between">
+    <div className="flex justify-between gap-4">
       <span>Remaining</span>
 
       <span
@@ -107,7 +157,7 @@ const percentage =
     </div>
   </div>
 
-  <div className="w-full bg-zinc-800 h-3 rounded-full mt-4 overflow-hidden">
+  <div className="w-full bg-zinc-800 h-4 rounded-full mt-4 overflow-hidden">
     <div
       className={`h-full ${
         percentage >= 100
@@ -122,10 +172,22 @@ const percentage =
     />
   </div>
 
-  <p className="text-xs text-zinc-500 mt-2">
-    {Math.round(percentage)}%
-    used
-  </p>
+  <p
+  className={`
+  text-xs
+  mt-2
+  ${
+    percentage >= 100
+      ? "text-red-500"
+      : percentage >= 80
+      ? "text-yellow-500"
+      : "text-zinc-500"
+  }
+`}
+>
+  {Math.round(percentage)}% used
+  {percentage >= 100 && " • Over Budget"}
+</p>
 </div>
         
           );

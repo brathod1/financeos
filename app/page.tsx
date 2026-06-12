@@ -1,4 +1,4 @@
-console.log("DASHBOARD PAGE");
+
 import { getAccounts } from "@/lib/accounts";
 import { getTransactions } from "@/lib/transactions";
 import { calculateAccountBalance } from "@/lib/balances";
@@ -12,17 +12,9 @@ from "@/lib/portfolio";
 export default async function HomePage() {
   const accounts = await getAccounts();
   const transactions = await getTransactions();
-  console.log(
-  "DASHBOARD TRANSACTIONS:",
-  transactions.length
-);
+  
 
-console.log(
-  transactions.map((t) => ({
-    title: t.title,
-    user: t.user_id,
-  }))
-);
+
   const categories = await getCategories();
   const now = new Date();
 
@@ -208,19 +200,34 @@ const netWorth =
       <div className="space-y-10 max-w-7xl mx-auto">
         <div className="mb-8">
   <p className="text-zinc-500 uppercase tracking-[0.3em] text-xs">
-    PERSONAL FINANCE OS
-  </p>
+  TRACK • PLAN • GROW
+</p>
 
-  <h1 className="text-7xl font-bold tracking-tight mt-4">
+  <h1
+  className="
+  text-4xl
+  md:text-7xl
+  font-bold
+  tracking-tight
+  mt-4
+  "
+>
   Good to see you 👋
 </h1>
 
   <p className="text-zinc-500 text-lg mt-4">
-    Here's your financial overview.
-  </p>
+  Welcome back to North.
+</p>
 </div>
 
-        <div className="grid gap-6 md:grid-cols-4">
+        <div
+  className="
+  grid
+  grid-cols-2
+xl:grid-cols-4
+  gap-6
+  "
+>
           <div
   className="
   bg-[#0F1117]
@@ -228,7 +235,8 @@ const netWorth =
   p-8
   border
   border-white/5
-  min-h-[220px]
+  min-h-[140px]
+md:min-h-[220px]
   flex
   flex-col
   justify-between
@@ -238,7 +246,14 @@ const netWorth =
               Net Worth
             </p>
 
-            <h2 className="text-6xl font-bold tracking-tight">
+            <h2
+  className="
+  text-2xl
+md:text-6xl
+  font-bold
+  tracking-tight
+  "
+>
               ₹{netWorth.toLocaleString()}
             </h2>
           </div>
@@ -250,7 +265,8 @@ const netWorth =
   p-8
   border
   border-white/5
-  min-h-[220px]
+  min-h-[140px]
+md:min-h-[220px]
   flex
   flex-col
   justify-between
@@ -260,7 +276,14 @@ const netWorth =
               Cash Available
             </p>
 
-            <h2 className="text-6xl font-bold tracking-tight">
+            <h2
+  className="
+  text-2xl
+md:text-6xl
+  font-bold
+  tracking-tight
+  "
+>
               ₹{cashAvailable.toLocaleString()}
             </h2>
           </div>
@@ -271,7 +294,8 @@ const netWorth =
   p-8
   border
   border-white/5
-  min-h-[220px]
+  min-h-[140px]
+md:min-h-[220px]
   flex
   flex-col
   justify-between
@@ -281,7 +305,14 @@ const netWorth =
     Money Invested
   </p>
 
-  <h2 className="text-6xl font-bold tracking-tight">
+  <h2
+  className="
+  text-2xl
+md:text-6xl
+  font-bold
+  tracking-tight
+  "
+>
     ₹{moneyInvested.toLocaleString()}
   </h2>
 </div>
@@ -292,7 +323,8 @@ const netWorth =
   p-8
   border
   border-white/5
-  min-h-[220px]
+  min-h-[140px]
+md:min-h-[220px]
   flex
   flex-col
   justify-between
@@ -302,29 +334,123 @@ const netWorth =
               Portfolio Value
             </p>
 
-            <h2 className="text-6xl font-bold tracking-tight">
+            <h2
+  className="
+  text-2xl
+md:text-6xl
+  font-bold
+  tracking-tight
+  "
+>
               ₹{portfolioValue.toLocaleString()}
             </h2>
           </div>
         </div>
       <div
   className="
+  space-y-6
+"
+>
+ <div
+  className="
   bg-[#0F1117]
   rounded-[32px]
-  p-8
+  p-6
   border
   border-white/5
-  min-h-[220px]
-  flex
-  flex-col
-  justify-between
+  "
+>
+  <h2 className="text-xl font-semibold mb-4">
+    Quick Actions
+  </h2>
+
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+    <a
+  href="/transactions/new"
+  className="
+  bg-black/30
+  border
+  border-white/5
+  rounded-xl
+  p-3
+  text-sm
+  text-center
+  transition-all
+  hover:bg-white/5
 "
+>
+  Add Transaction
+</a>
+
+    <a 
+    href="/accounts"
+    className="
+  bg-black/30
+  border
+  border-white/5
+  rounded-xl
+  p-3
+  text-sm
+  text-center
+  transition-all
+  hover:bg-white/5
+">
+  
+  Add Account
+    </a>
+
+    <a href="/categories"className="
+  bg-black/30
+  border
+  border-white/5
+  rounded-xl
+  p-3
+  text-sm
+  text-center
+  transition-all
+  hover:bg-white/5
+">
+      Categories
+    </a>
+
+    <a href="/investments" className="
+  bg-black/30
+  border
+  border-white/5
+  rounded-xl
+  p-3
+  text-sm
+  text-center
+  transition-all
+  hover:bg-white/5
+">
+      Investments
+    </a>
+
+  </div>
+</div> 
+  <div
+  className="
+  bg-[#0F1117]
+  rounded-[32px]
+  p-6
+  border
+  border-white/5
+  "
 >
   <h2 className="text-xl font-semibold mb-6">
     This Month
   </h2>
 
-  <div className="grid gap-4 md:grid-cols-4">
+  <div
+  className="
+  grid
+  grid-cols-2
+  md:grid-cols-4
+  gap-6
+  "
+>
 
     <div>
       <p className="text-zinc-500 text-sm">
@@ -370,12 +496,26 @@ const netWorth =
       >
         ₹{monthlySavings.toLocaleString()}
       </p>
+      <div
+  className="
+  grid
+  grid-cols-2
+  md:grid-cols-4
+  gap-6
+  "
+> </div>
     </div>
 
   </div>
+  </div>
 </div>
 
-<div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+<div className="bg-[#0F1117]
+rounded-[32px]
+p-6
+md:p-8
+border
+border-white/5">
   <h2 className="text-xl font-semibold mb-4">
     Top Spending Categories
   </h2>
@@ -404,7 +544,12 @@ const netWorth =
   )}
 </div>
 
-<div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+<div className="bg-[#0F1117]
+rounded-[32px]
+p-6
+md:p-8
+border
+border-white/5">
   <h2 className="text-xl font-semibold mb-4">
     Spending Breakdown
   </h2>
@@ -414,12 +559,24 @@ const netWorth =
   />
 </div>
 
-<div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+<div className="bg-[#0F1117]
+rounded-[32px]
+p-6
+md:p-8
+border
+border-white/5">
   <h2 className="text-xl font-semibold mb-4">
     Spending Insights
   </h2>
 
-  <div className="grid gap-4 md:grid-cols-4">
+  <div
+  className="
+  grid
+  grid-cols-2
+  md:grid-cols-4
+  gap-6
+  "
+>
 
     <div>
       <p className="text-zinc-500 text-sm">
@@ -474,47 +631,102 @@ const netWorth =
 
   </div>
 </div>
-        <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
-          <h2 className="text-xl font-semibold mb-4">
-            Accounts
-          </h2>
+<div
+  className="
+  grid
+  md:grid-cols-2
+  gap-6
+  "
+>
 
-          <div className="space-y-3">
-  {accounts.map((account) => {
-    const balance =
-  calculateAccountBalance(
-    account.id,
-    Number(account.starting_balance),
-    transactions
-  );
+        <div
+  className="
+  bg-[#0F1117]
+  rounded-[32px]
+  p-6
+  md:p-8
+  border
+  border-white/5
+  "
+>
+  <h2 className="text-xl font-semibold mb-6">
+    Accounts
+  </h2>
 
+  <div className="space-y-3">
 
-            return (
-              <div
-                key={account.id}
-                className="flex justify-between border-b border-zinc-800 pb-3"
-              >
-                <span>{account.name}</span>
+    {accounts.length === 0 && (
+      <p className="text-zinc-500">
+        No accounts yet.
+      </p>
+    )}
 
-                <span>
-                  ₹{balance.toLocaleString()}
-                </span>
-              </div>
-            );
-          })}
-          </div>
+    {accounts.map((account) => {
+      const balance =
+        calculateAccountBalance(
+          account.id,
+          Number(account.starting_balance),
+          transactions
+        );
+
+      return (
+        <div
+          key={account.id}
+          className="
+          flex
+          justify-between
+          gap-4
+          border-b
+          border-white/5
+          pb-3
+          "
+        >
+          <span>{account.name}</span>
+
+          <span>
+            ₹{balance.toLocaleString()}
+          </span>
         </div>
+      );
+    })}
+  </div>
+</div>
 
-        <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
-          <h2 className="text-xl font-semibold mb-4">
-            Recent Transactions
-          </h2>
+        <div
+  className="
+  bg-[#0F1117]
+  rounded-[32px]
+  p-6
+  md:p-8
+  border
+  border-white/5
+  "
+>
+  <h2 className="text-xl font-semibold mb-6">
+    Recent Transactions
+  </h2>
 
-          <div className="space-y-3">
-            {transactions.map((transaction) => (
+  <div className="space-y-3">
+
+            {transactions.length === 0 && (
+  <p className="text-zinc-500">
+    No transactions yet.
+  </p>
+)}
+            {transactions
+          
+  .slice(0, 5)
+  .map((transaction) => (
               <div
                 key={transaction.id}
-                className="flex justify-between border-b border-zinc-800 pb-3"
+                className="
+flex
+justify-between
+gap-4
+border-b
+border-zinc-800
+pb-3
+"
               >
                 <span>{transaction.title}</span>
 
@@ -526,6 +738,6 @@ const netWorth =
           </div>
         </div>
       </div>
-    
+    </div>
   );
 }

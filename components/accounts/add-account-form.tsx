@@ -17,15 +17,18 @@ export function AddAccountForm() {
       <DialogTrigger asChild>
         <button
           className="
-          bg-white
-          text-black
-          px-6
-          py-3
-          rounded-full
-          font-medium
-          hover:scale-[1.02]
-          transition
-          "
+w-auto
+self-start
+md:w-auto
+bg-white
+text-black
+px-6
+py-3
+rounded-full
+font-medium
+hover:scale-[1.02]
+transition
+"
         >
           + Add Account
         </button>

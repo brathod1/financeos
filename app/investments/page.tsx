@@ -3,6 +3,8 @@ import { getInvestments } from "@/lib/investments";
 import { AddInvestmentForm } from "@/components/investments/add-investment-form";
 import { getAccounts } from "@/lib/accounts";
 import { EditInvestmentForm } from "@/components/investments/edit-investment-form";
+import { AddInvestmentDialog }
+from "@/components/investments/add-investment-dialog";
 import { getCurrentPrice }
 from "@/lib/market-prices";
 import {
@@ -179,45 +181,51 @@ const portfolioReturn =
         Portfolio
       </p>
 
-      <h1 className="text-5xl font-bold mt-2">
+      <h1 className="text-5xl md:text-7xl font-bold mt-2">
         Investments
       </h1>
-    </div>
 
-    <AddInvestmentForm
-      accounts={accounts}
-    />
-  <form action={saveSnapshot}>
-  <button
-    type="submit"
-    className="px-4 py-2 border border-zinc-700 rounded-lg hover:bg-zinc-800"
-  >
-    📸 Take Snapshot
-  </button>
-</form>
+      <p className="text-zinc-500 mt-4">
+  Track portfolio value, returns and asset allocation.
+</p>
+<div className="mt-6">
+  <AddInvestmentDialog
+    accounts={accounts}
+  />
+</div>
+
+    </div>
+  
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
       <h2 className="text-xl font-semibold mb-8">
         Portfolio Summary
       </h2>
 
-      <div className="grid grid-cols-2 gap-8">
+      <div
+  className="
+  grid
+  grid-cols-1
+  md:grid-cols-2
+  gap-6
+  "
+>
         <div>
           <p className="text-zinc-500 text-sm">
             Invested
           </p>
 
-          <p className="text-4xl font-bold mt-2">
+          <p className="text-3xl md:text-4xl font-bold mt-2">
             ₹
             {totalInvested.toLocaleString()}
           </p>
         </div>
 
-        <div className="text-right">
+        <div className="md:text-right">
           <p className="text-zinc-500 text-sm">
             Current Value
           </p>
 
-          <p className="text-4xl font-bold mt-2">
+         <p className="text-3xl md:text-4xl font-bold mt-2">
             ₹
             {portfolioValue.toLocaleString()}
           </p>
@@ -225,13 +233,34 @@ const portfolioReturn =
       </div>
 
       <div className="mt-8 pt-6 border-t border-zinc-800">
-        <p className="text-zinc-500 text-sm">
-          Profit / Loss
-        </p>
+        <p
+  className="
+  text-zinc-400
+  uppercase
+  tracking-widest
+  text-xs
+  "
+>
+  Profit / Loss
+</p>
 
-        <div className="flex items-center gap-4 mt-2">
+        <div
+  className="
+  flex
+  flex-col
+  md:flex-row
+  items-start
+  md:items-center
+  gap-3
+  mt-2
+  "
+>
           <p
-            className={`text-4xl font-bold ${
+  className={`
+text-4xl
+md:text-5xl
+font-bold
+${
               totalProfitLoss >= 0
                 ? "text-green-500"
                 : "text-red-500"
@@ -242,7 +271,7 @@ const portfolioReturn =
           </p>
 
           <div
-            className={`px-3 py-1 rounded-full text-sm ${
+  className={`px-4 py-2 rounded-full text-base font-medium ${
               totalProfitLoss >= 0
                 ? "bg-green-500/10 text-green-500"
                 : "bg-red-500/10 text-red-500"
@@ -256,23 +285,38 @@ const portfolioReturn =
         </div>
       </div>
     </div>
-    <PortfolioHistoryChart
-  data={history}
-/>
-    <AllocationChart
-  title="Allocation by Holdings"
-  data={allocationData}
-/>
 
-<AllocationChart
-  title="Allocation by Asset Type"
-  data={assetTypeData}
-/>
+    <div>
+  <h2 className="text-xl font-semibold">
+    Holdings
+  </h2>
+
+  <p className="text-zinc-500 text-sm mt-1">
+    Current positions and returns
+  </p>
+</div>
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl">
       {holdings.length === 0 ? (
-        <div className="p-10 text-center text-zinc-500">
-          No investments yet
-        </div>
+        <div
+  className="
+  p-6
+  md:p-10
+  text-center
+  "
+>
+  <>
+  <div className="text-5xl mb-4">
+  💹
+</div>
+
+  <h3 className="text-xl font-semibold"> 
+    No investments yet
+  </h3>
+</>
+  <p className="text-zinc-500 mt-2">
+    Add your first investment to start tracking returns.
+  </p>
+</div>
       ) : (
         holdings.map(
           (holding) => {
@@ -302,7 +346,15 @@ const returnPercent =
   key={holding.symbol}
   className="p-6 border-b border-zinc-800"
 >
-  <div className="flex justify-between">
+  <div
+  className="
+  flex
+  flex-col
+  md:flex-row
+  gap-6
+  md:justify-between
+  "
+>
 
     <div>
       <p className="text-zinc-500 text-sm">
@@ -312,7 +364,7 @@ const returnPercent =
         {avgCost.toFixed(2)}
       </p>
 
-      <h3 className="text-2xl font-semibold mt-3">
+      <h3 className="text-xl md:text-2xl font-semibold mt-3">
         {holding.symbol.toUpperCase()}
       </h3>
 
@@ -322,7 +374,7 @@ const returnPercent =
       </p>
     </div>
 
-    <div className="text-right">
+    <div className="md:text-right">
 
       <p
         className={`text-2xl font-bold ${
@@ -380,5 +432,46 @@ const returnPercent =
         )
       )}
     </div>
+
+    <div>
+  <h2 className="text-xl font-semibold">
+    Performance
+  </h2>
+
+  <p className="text-zinc-500 text-sm mt-1">
+    Portfolio value over time
+  </p>
+</div>
+    <PortfolioHistoryChart
+  data={history}
+/>
+<form action={saveSnapshot}>
+  <button
+    type="submit"
+    className="px-4 py-2 border border-zinc-700 rounded-lg hover:bg-zinc-800"
+  >
+    📸 Take Snapshot
+  </button>
+</form>
+
+<div>
+  <h2 className="text-xl font-semibold">
+    Allocation
+  </h2>
+
+  <p className="text-zinc-500 text-sm mt-1">
+    Breakdown of your portfolio
+  </p>
+</div>
+    <AllocationChart
+  title="Allocation by Holdings"
+  data={allocationData}
+/>
+
+<AllocationChart
+  title="Allocation by Asset Type"
+  data={assetTypeData}
+/>
+
   </div>
 );}

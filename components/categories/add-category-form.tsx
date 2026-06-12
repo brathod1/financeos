@@ -17,15 +17,17 @@ export function AddCategoryForm() {
       <DialogTrigger asChild>
         <button
           className="
-          bg-white
-          text-black
-          px-6
-          py-3
-          rounded-full
-          font-medium
-          hover:scale-[1.02]
-          transition
-          "
+w-full
+md:w-auto
+bg-white
+text-black
+px-6
+py-3
+rounded-2xl
+font-medium
+hover:scale-[1.02]
+transition
+"
         >
           + Add Category
         </button>
@@ -83,16 +85,17 @@ export function AddCategoryForm() {
           </select>
 
           <button
-            type="submit"
-            className="
-            bg-white
-            text-black
-            px-6
-            py-3
-            rounded-full
-            font-medium
-            "
-          >
+  type="submit"
+  className="
+  w-full
+  bg-white
+  text-black
+  px-6
+  py-3
+  rounded-2xl
+  font-medium
+  "
+>
             Create Category
           </button>
 
