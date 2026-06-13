@@ -2,6 +2,8 @@ console.log("INVESTMENTS PAGE");
 import { getInvestments } from "@/lib/investments";
 import { AddInvestmentForm } from "@/components/investments/add-investment-form";
 import { getAccounts } from "@/lib/accounts";
+import { getAssets }
+from "@/lib/assets";
 import { EditInvestmentForm } from "@/components/investments/edit-investment-form";
 import { AddInvestmentDialog }
 from "@/components/investments/add-investment-dialog";
@@ -46,8 +48,10 @@ const holdings = Object.values(
   investments.reduce(
     (acc, investment) => {
       const symbol =
-        investment.symbol ||
-        "UNKNOWN";
+  investment.symbol
+    ?.trim()
+    .toUpperCase() ||
+  "UNKNOWN";
 
       if (!acc[symbol]) {
         acc[symbol] = {
@@ -97,7 +101,14 @@ const holdings = Object.values(
     >
   )
 );
-
+console.log(
+  "HOLDINGS",
+  JSON.stringify(
+    holdings,
+    null,
+    2
+  )
+);
 const allocationData =
   holdings.map(
     (holding) => ({
@@ -143,6 +154,13 @@ const allocationData =
   );
 const accounts =
   await getAccounts();
+  const assets =
+  await getAssets();
+  console.log(
+  "ASSETS PAGE",
+  assets.length,
+  assets
+);
 const history =
   await getPortfolioHistory();
 
@@ -191,15 +209,37 @@ const portfolioReturn =
 <div className="mt-6">
   <AddInvestmentDialog
     accounts={accounts}
+    assets={assets}
   />
 </div>
 
     </div>
   
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
-      <h2 className="text-xl font-semibold mb-8">
-        Portfolio Summary
-      </h2>
+      <div
+  className="
+  flex
+  justify-between
+  items-center
+  mb-8
+  "
+>
+  <h2 className="text-xl font-semibold">
+    Portfolio Summary
+  </h2>
+
+  <span
+    className="
+    px-3
+    py-1
+    rounded-full
+    bg-white/5
+    text-sm
+    "
+  >
+    {holdings.length} Holdings
+  </span>
+</div>
 
       <div
   className="
@@ -367,11 +407,32 @@ const returnPercent =
       <h3 className="text-xl md:text-2xl font-semibold mt-3">
         {holding.symbol.toUpperCase()}
       </h3>
+       <div className="mt-2">
+  <span
+    className="
+    px-3
+    py-1
+    rounded-full
+    text-xs
+    bg-white/5
+    border
+    border-white/10
+    "
+  >
+    {holding.investmentType}
+  </span>
+</div>         
+      <div className="mt-3 space-y-1">
+  <p className="text-zinc-500">
+    Invested ₹
+    {holding.invested.toLocaleString()}
+  </p>
 
-      <p className="text-zinc-500 mt-2">
-        Invested ₹
-        {holding.invested.toLocaleString()}
-      </p>
+  <p className="text-white font-semibold">
+    Current Value ₹
+    {currentValue.toLocaleString()}
+  </p>
+</div>
     </div>
 
     <div className="md:text-right">
@@ -432,6 +493,7 @@ const returnPercent =
         )
       )}
     </div>
+
 
     <div>
   <h2 className="text-xl font-semibold">

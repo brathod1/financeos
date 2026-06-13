@@ -1,7 +1,7 @@
 "use client";
 
 import { createAccount } from "@/app/actions/accounts";
-
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -11,8 +11,21 @@ import {
 } from "@/components/ui/dialog";
 
 export function AddAccountForm() {
+  const [open, setOpen] =
+    useState(false);
+
+    async function handleSubmit(
+  formData: FormData
+) {
+  await createAccount(formData);
+
+  setOpen(false);
+}
   return (
-    <Dialog>
+    <Dialog
+  open={open}
+  onOpenChange={setOpen}
+>
 
       <DialogTrigger asChild>
         <button
@@ -43,9 +56,9 @@ transition
         </DialogHeader>
 
         <form
-          action={createAccount}
-          className="space-y-5 mt-4"
-        >
+  action={handleSubmit}
+  className="space-y-5 mt-4"
+>
 
           <input
             name="name"
@@ -89,6 +102,7 @@ transition
             name="startingBalance"
             type="number"
             min="0"
+            step="0.01"
             defaultValue="0"
             className="
             w-full

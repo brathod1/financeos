@@ -25,7 +25,10 @@ export async function sellInvestment(
         "sellPrice"
       )
     );
-
+const sellDate =
+  formData.get(
+    "sellDate"
+  ) as string;
   const accountId =
     formData.get(
       "accountId"
@@ -118,14 +121,14 @@ if (!user) {
 
   let remainingToSell =
     sellUnits;
-
+let costBasis = 0;
   for (const investment of investments) {
     if (
       remainingToSell <= 0
     ) {
       break;
     }
-
+    
     const units =
       Number(
         investment.units
@@ -133,66 +136,103 @@ if (!user) {
 
     // Sell entire lot
     if (
-      units <=
-      remainingToSell
-    ) {
-      remainingToSell -=
-        units;
+  units <=
+  remainingToSell
+) {
 
-      await supabase
-        .from(
-          "investments"
-        )
-        .delete()
-        .eq(
-          "id",
-          investment.id
-        );
-    }
+  costBasis +=
+    units *
+    Number(
+      investment.buy_price
+    );
+
+  remainingToSell -=
+    units;
+
+  await supabase
+    .from(
+      "investments"
+    )
+    .delete()
+    .eq(
+      "id",
+      investment.id
+    );
+}
 
     // Sell partial lot
     else {
-      await supabase
-        .from(
-          "investments"
-        )
-        .update({
-          units: Number(
-            (
-              units -
-              remainingToSell
-            ).toFixed(4)
-          ),
-        })
-        .eq(
-          "id",
-          investment.id
-        );
 
-      remainingToSell = 0;
-    }
+  costBasis +=
+    remainingToSell *
+    Number(
+      investment.buy_price
+    );
+
+  await supabase
+    .from(
+      "investments"
+    )
+    .update({
+      units: Number(
+        (
+          units -
+          remainingToSell
+        ).toFixed(4)
+      ),
+    })
+    .eq(
+      "id",
+      investment.id
+    );
+
+  remainingToSell = 0;
+}
   }
 
   const saleAmount =
     sellUnits *
     sellPrice;
+  const realizedProfit =
+  saleAmount - costBasis;
+  const transactionDate =
+  sellDate ||
+  new Date()
+    .toISOString()
+    .split("T")[0];
+await supabase
+  .from("realized_gains")
+  .insert({
+    user_id: user.id,
 
-  const today =
-    new Date()
-      .toISOString()
-      .split("T")[0];
+    symbol,
 
+    units: sellUnits,
+
+    sale_price:
+      sellPrice,
+
+    sale_value:
+      saleAmount,
+
+    cost_basis:
+      costBasis,
+
+    profit_loss:
+      realizedProfit,
+
+    sold_at: transactionDate,
+  });
   const { error } =
     await supabase
       .from("transactions")
       .insert({
-        user_id:
-          "00000000-0000-0000-0000-000000000001",
+        user_id: user.id,
 
         title:
-          `Sell ${sellUnits.toFixed(
-            4
-          )} ${symbol.toUpperCase()}`,
+  `Sold ${sellUnits.toFixed(
+    4
+  )} ${symbol.toUpperCase()}`,
 
         amount:
           saleAmount,
@@ -202,9 +242,9 @@ if (!user) {
 
         transaction_type:
           "investment_sell",
-
+        
         transaction_date:
-          today,
+  transactionDate,
       });
 
   if (error) {
@@ -224,4 +264,7 @@ if (!user) {
   );
 
   revalidatePath("/");
+  revalidatePath(
+  "/analytics"
+);
 }

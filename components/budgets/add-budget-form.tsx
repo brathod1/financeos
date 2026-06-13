@@ -44,11 +44,13 @@ space-y-4
       </select>
 
       <input
-        type="number"
-        name="monthlyLimit"
-        placeholder="Monthly Budget (₹)"
-        className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4"
-      />
+  type="number"
+  name="monthlyLimit"
+  min="0"
+  step="0.01"
+  placeholder="Monthly Budget (₹)"
+  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4"
+/>
 
       <button
   type="submit"

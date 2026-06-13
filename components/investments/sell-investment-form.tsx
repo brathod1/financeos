@@ -29,6 +29,15 @@ export function SellInvestmentForm({
 
   const [sellAmount, setSellAmount] =
     useState(100);
+    const [sellPrice, setSellPrice] =
+  useState(currentPrice);
+
+  const [sellDate, setSellDate] =
+  useState(
+    new Date()
+      .toISOString()
+      .split("T")[0]
+  );
 
   const effectiveUnits =
     mode === "quantity"
@@ -41,8 +50,8 @@ export function SellInvestmentForm({
         );
 
   const saleValue =
-    effectiveUnits *
-    currentPrice;
+  effectiveUnits *
+  sellPrice;
 
   const costBasis =
     effectiveUnits *
@@ -75,10 +84,16 @@ export function SellInvestmentForm({
         />
 
         <input
-          type="hidden"
-          name="sellPrice"
-          value={currentPrice}
-        />
+  type="hidden"
+  name="sellPrice"
+  value={sellPrice}
+/>
+
+<input
+  type="hidden"
+  name="sellDate"
+  value={sellDate}
+/>
 
         <div className="flex gap-6 text-sm">
           <label className="flex items-center gap-2 cursor-pointer">
@@ -124,7 +139,53 @@ export function SellInvestmentForm({
             )}
           </p>
         </div>
+         <div>
+  <label className="text-zinc-400 text-sm block mb-2">
+    Sell Price
+  </label>
 
+  <input
+    type="number"
+    step="0.01"
+    min="0"
+    value={sellPrice}
+    onChange={(e) =>
+      setSellPrice(
+        Number(
+          e.target.value
+        )
+      )
+    }
+    className="
+    w-full
+    bg-zinc-800
+    rounded-xl
+    p-3
+    "
+  />
+</div>
+
+<div>
+  <label className="text-zinc-400 text-sm block mb-2">
+    Sell Date
+  </label>
+
+  <input
+    type="date"
+    value={sellDate}
+    onChange={(e) =>
+      setSellDate(
+        e.target.value
+      )
+    }
+    className="
+    w-full
+    bg-zinc-800
+    rounded-xl
+    p-3
+    "
+  />
+</div>
         {mode === "quantity" && (
           <>
             <div>

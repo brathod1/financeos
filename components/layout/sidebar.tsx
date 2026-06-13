@@ -80,14 +80,35 @@ const {
     flex-col
   "
 >
-      <div className="px-4 mb-10">
-        <h1 className="text-3xl font-bold">
-  North
-</h1>
+      <div className="px-4 mb-10 pb-6 border-b border-white/5">
+        <div className="flex items-center gap-3">
+  <div
+    className="
+    w-10
+    h-10
+    rounded-2xl
+    bg-white
+    text-black
+    flex
+    items-center
+    justify-center
+    font-bold
+    text-lg
+    "
+  >
+    N
+  </div>
 
-<p className="text-zinc-500 mt-2 text-sm">
-  Track. Plan. Grow.
-</p>
+  <div>
+    <h1 className="text-2xl font-bold">
+      North
+    </h1>
+
+    <p className="text-zinc-500 text-xs">
+      Track. Plan. Grow.
+    </p>
+  </div>
+</div>
       </div>
 
       <nav className="space-y-2">

@@ -13,9 +13,34 @@ export function MobileHeader() {
       py-4
       "
     >
-      <h1 className="font-bold text-lg">
-        North
-      </h1>
+      <div className="flex items-center gap-3">
+  <div
+    className="
+    w-8
+    h-8
+    rounded-xl
+    bg-white
+    text-black
+    flex
+    items-center
+    justify-center
+    font-bold
+    text-sm
+    "
+  >
+    N
+  </div>
+
+  <div>
+    <h1 className="font-bold text-lg leading-none">
+      North
+    </h1>
+
+    <p className="text-[10px] text-zinc-500">
+      Track. Plan. Grow.
+    </p>
+  </div>
+</div>
     </div>
   );
 }

@@ -20,19 +20,43 @@ export function CategorySpendingChart({
   data,
 }: Props) {
   return (
-    <div className="h-80 w-full min-w-0">
+    <div className="w-full">
       <ResponsiveContainer
         width="100%"
-        height={300}
+        height={260}
       >
-        <BarChart data={data}>
-          <XAxis dataKey="category" />
+        <BarChart
+  data={data}
+  margin={{
+    top: 10,
+    right: 10,
+    left: -20,
+    bottom: 40,
+  }}
+>
+          <XAxis
+  dataKey="category"
+  tick={{
+    fontSize: 12,
+  }}
+  interval={0}
+  angle={-20}
+  textAnchor="end"
+/>
 
           <YAxis />
 
-          <Tooltip />
+          <Tooltip
+  formatter={(value) => [
+    `₹${Number(value).toLocaleString()}`,
+    "Spent",
+  ]}
+/>
 
-          <Bar dataKey="amount" />
+          <Bar
+  dataKey="amount"
+  radius={[8, 8, 0, 0]}
+/>
         </BarChart>
       </ResponsiveContainer>
     </div>

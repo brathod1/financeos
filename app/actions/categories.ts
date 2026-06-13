@@ -54,3 +54,47 @@ export async function createCategory(
     "/transactions/new"
   );
 }
+
+export async function deleteCategory(
+  formData: FormData
+) {
+  const categoryId =
+    formData.get("id") as string;
+
+  const { data: transactions } =
+    await supabase
+      .from("transactions")
+      .select("id")
+      .eq(
+        "category_id",
+        categoryId
+      )
+      .limit(1);
+
+  if (
+    transactions &&
+    transactions.length > 0
+  ) {
+    throw new Error(
+      "Category is being used by transactions."
+    );
+  }
+
+  const { error } =
+    await supabase
+      .from("categories")
+      .delete()
+      .eq("id", categoryId);
+
+  if (error) {
+    throw error;
+  }
+
+  revalidatePath(
+    "/categories"
+  );
+
+  revalidatePath(
+    "/transactions/new"
+  );
+}

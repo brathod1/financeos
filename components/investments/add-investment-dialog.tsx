@@ -1,5 +1,5 @@
 "use client";
-
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,14 +9,26 @@ import {
 } from "@/components/ui/dialog";
 
 import { AddInvestmentForm } from "./add-investment-form";
-
+import { Asset }
+from "@/types/asset";
 export function AddInvestmentDialog({
   accounts,
+  assets,
 }: {
   accounts: any[];
+  assets: Asset[];
 }) {
+  const [open, setOpen] =
+    useState(false);
+    console.log(
+  "ASSETS DIALOG",
+  assets
+);
   return (
-    <Dialog>
+    <Dialog
+  open={open}
+  onOpenChange={setOpen}
+>
       <DialogTrigger asChild>
         <button
           className="
@@ -51,6 +63,8 @@ export function AddInvestmentDialog({
 
         <AddInvestmentForm
           accounts={accounts}
+           assets={assets}
+          setOpen={setOpen}
         />
       </DialogContent>
     </Dialog>

@@ -30,19 +30,40 @@ export function IncomeExpenseChart({
   ];
 
   return (
-    <div className="h-80">
+    <div className="w-full">
       <ResponsiveContainer
         width="100%"
-        height={300}
+        height={260}
       >
-        <BarChart data={data}>
-          <XAxis dataKey="name" />
+        <BarChart
+  data={data}
+  margin={{
+    top: 10,
+    right: 10,
+    left: -20,
+    bottom: 20,
+  }}
+>
+          <XAxis
+  dataKey="name"
+  tick={{
+    fontSize: 12,
+  }}
+/>
 
           <YAxis />
 
-          <Tooltip />
+          <Tooltip
+  formatter={(value) => [
+    `₹${Number(value).toLocaleString()}`,
+    "Amount",
+  ]}
+/>
 
-          <Bar dataKey="amount" />
+          <Bar
+  dataKey="amount"
+  radius={[8, 8, 0, 0]}
+/>
         </BarChart>
       </ResponsiveContainer>
     </div>

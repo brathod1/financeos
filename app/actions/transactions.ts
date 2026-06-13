@@ -28,6 +28,10 @@ export async function createTransaction(
     "transactionType"
   ) as string;
 
+  const transactionDate = formData.get(
+  "transactionDate"
+) as string;
+
   if (!title?.trim()) {
   throw new Error("Title is required");
 }
@@ -97,9 +101,7 @@ if (!user) {
       transaction_type: transactionType,
 
       transaction_date:
-  new Date()
-    .toISOString()
-    .split("T")[0],
+  transactionDate,
     });
 
   if (error) {

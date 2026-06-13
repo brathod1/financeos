@@ -1,64 +1,163 @@
 "use client";
 
 import { createInvestment } from "@/app/actions/investments";
+import { useRef, useState } from "react";
 import { Account } from "@/types/accounts";
+import { Asset } from "@/types/asset";
+import { AssetSearch } from "./asset-search";
 interface Props {
   accounts: Account[];
+  assets: Asset[];
+
+  setOpen: (
+    open: boolean
+  ) => void;
 }
 export function AddInvestmentForm({
   accounts,
+  assets,
+  setOpen,
 }: Props) {
+  const formRef =
+  useRef<HTMLFormElement>(
+    null
+  );
+  const [selectedAsset, setSelectedAsset] =
+  useState<Asset | null>(
+    null
+  );
+  console.log(
+  "ASSETS FORM",
+  assets
+);
+  async function handleSubmit(
+  formData: FormData
+) {
+  await createInvestment(
+    formData
+  );
+
+  formRef.current?.reset();
+
+  setOpen(false);
+  console.log(
+  "ASSETS FORM",
+  assets
+);
+}
   return (
     <form
-      action={createInvestment}
+  ref={formRef}
+  action={handleSubmit}
       className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4"
     >
+      <div>
+  <label className="block mb-2">
+    Search Asset
+  </label>
+
+  <AssetSearch
+    assets={assets}
+    onSelect={(asset) =>
+      setSelectedAsset(
+        asset
+      )
+    }
+  />
+</div>
       <input
-        name="name"
-        placeholder="Nifty 50 ETF"
-        className="w-full bg-zinc-800 rounded-xl p-4"
-      />
+  name="name"
+  placeholder="Asset Name"
+  value={
+    selectedAsset?.name ??
+    ""
+  }
+  readOnly
+  className="w-full bg-zinc-800 rounded-xl p-4"
+/>
 
-      <select
-        name="investmentType"
-        className="w-full bg-zinc-800 rounded-xl p-4"
-      >
-        <option value="ETF">
-          ETF
-        </option>
+    <select
+  name="investmentTypeDisplay"
+  value={
+    selectedAsset?.asset_type ?? ""
+  }
+  disabled
+  className="w-full bg-zinc-800 rounded-xl p-4"
+>
+  <option value="ETF">
+    ETF
+  </option>
 
-        <option value="InvIT">
-          InvIT
-        </option>
+  <option value="InvIT">
+    InvIT
+  </option>
 
-        <option value="Stock">
-          Stock
-        </option>
+  <option value="Stock">
+    Stock
+  </option>
 
-        <option value="Gold">
-          Gold
-        </option>
-      </select>
+  <option value="Gold">
+    Gold
+  </option>
+</select>
+
+<input
+  type="hidden"
+  name="investmentType"
+  value={
+    selectedAsset?.asset_type ?? ""
+  }
+/>
 
       <input
-        name="units"
-        type="number"
-        placeholder="Units"
-        className="w-full bg-zinc-800 rounded-xl p-4"
-      />
+  name="units"
+  type="number"
+  min="0"
+  step="0.01"
+  placeholder="Units"
+  className="w-full bg-zinc-800 rounded-xl p-4"
+/>
 
       <input
-        name="buyPrice"
-        type="number"
-        placeholder="Buy Price"
-        className="w-full bg-zinc-800 rounded-xl p-4"
-      />
+  name="buyPrice"
+  type="number"
+  min="0"
+  step="0.01"
+  placeholder="Buy Price"
+  className="w-full bg-zinc-800 rounded-xl p-4"
+/>
 
       <input
   name="symbol"
-  placeholder="NIFTYBEES"
+  value={
+    selectedAsset?.symbol ??
+    ""
+  }
+  readOnly
   className="w-full bg-zinc-800 rounded-xl p-4"
 />
+<div>
+  <label className="block mb-2">
+    Purchase Date
+  </label>
+
+  <input
+    type="date"
+    name="purchaseDate"
+    required
+    defaultValue={
+      new Date()
+        .toISOString()
+        .split("T")[0]
+    }
+    className="
+    w-full
+    bg-zinc-800
+    rounded-xl
+    p-4
+    "
+  />
+</div>
   <div>
   <label className="block mb-2">
     Account

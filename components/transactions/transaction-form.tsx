@@ -94,11 +94,35 @@ export function TransactionForm({
           <label className="block mb-2">
             Amount
           </label>
+<div>
+  <label className="block mb-2">
+    Date
+  </label>
 
+  <input
+    type="date"
+    name="transactionDate"
+    required
+    defaultValue={
+      new Date()
+        .toISOString()
+        .split("T")[0]
+    }
+    className="
+    w-full
+    bg-zinc-900
+    border
+    border-zinc-800
+    rounded-xl
+    p-4
+    "
+  />
+</div>
           <input
             name="amount"
             type="number"
             min="1"
+            step="0.01"
             required
             className="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-4"
           />

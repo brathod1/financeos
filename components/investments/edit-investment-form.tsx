@@ -209,18 +209,31 @@ export function EditInvestmentForm({
           />
 
           <input
-            name="units"
-            type="number"
+  name="units"
+  type="number"
+  min="0"
+  step="0.01"
             defaultValue={investment.units}
             className="w-full border rounded-lg p-3"
           />
 
           <input
-            name="buyPrice"
-            type="number"
-            defaultValue={investment.buy_price}
-            className="w-full border rounded-lg p-3"
-          />
+  name="buyPrice"
+  type="number"
+  min="0"
+  step="0.01"
+  defaultValue={investment.buy_price}
+  className="w-full border rounded-lg p-3"
+/>
+
+<input
+  type="date"
+  name="purchaseDate"
+  defaultValue={
+    investment.purchase_date
+  }
+  className="w-full border rounded-lg p-3"
+/>
 
           <div className="text-sm border rounded-lg p-3">
             ⚠ Updating this investment will also update the linked transaction.

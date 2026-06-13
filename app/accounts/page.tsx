@@ -101,7 +101,7 @@ export default async function AccountsPage() {
     bg-[#0F1117]
     border
     border-white/5
-    rounded-[32px]
+    rounded-[28px]
     p-10
     text-center
     "
@@ -138,56 +138,69 @@ export default async function AccountsPage() {
               <div
                 key={account.id}
                 className="
-                bg-[#0F1117]
-                border
-                border-white/5
-                rounded-[32px]
-                p-8
-                min-h-[260px]
-                flex
-                flex-col
-                justify-between
-                "
+bg-[#0F1117]
+border
+border-white/5
+rounded-[28px]
+p-5
+flex
+flex-col
+justify-between
+"
               >
-                <div>
+                <div className="flex items-start gap-4">
 
-                  <div
-                    className="
-                    w-14
-                    h-14
-                    rounded-2xl
-                    bg-white/5
-                    flex
-                    items-center
-                    justify-center
-                    "
-                  >
-                    {getIcon(
-                      account.account_type
-                    )}
-                  </div>
+  <div className="flex items-start">
 
-                  <p className="text-zinc-500 uppercase tracking-[0.2em] text-xs mt-6">
-                    {account.account_type}
-                  </p>
+  <div className="flex items-start gap-4">
 
-                  <h2 className="text-3xl font-semibold mt-2">
-                    {account.name}
-                  </h2>
-                </div>
+    <div
+      className="
+      w-12
+      h-12
+      rounded-2xl
+      bg-white/5
+      flex
+      items-center
+      justify-center
+      shrink-0
+      "
+    >
+      {getIcon(account.account_type)}
+    </div>
 
-                <div>
+    <div>
+      <p className="text-zinc-500 uppercase tracking-[0.2em] text-xs">
+        {account.account_type}
+      </p>
 
-                  <p className="text-5xl font-bold tracking-tight">
+      <h2 className="text-2xl font-semibold mt-1">
+        {account.name}
+      </h2>
+      <p className="text-3xl font-bold tracking-tight">
                     ₹
                     {balance.toLocaleString()}
                   </p>
+    </div>
 
-                  <div className="mt-6">
-                    <EditAccountForm
-                      account={account}
-                    />
-                  </div>
+  </div>
+
+  
+
+</div>
+<div className="ml-auto">
+  <EditAccountForm
+    account={account}
+  />
+</div>
+</div>
+
+
+                <div>
+
+                  
+
+                  
 
                 </div>
               </div>

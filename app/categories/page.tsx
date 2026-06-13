@@ -1,5 +1,6 @@
 import { getCategories } from "@/lib/categories";
 import { AddCategoryForm } from "@/components/categories/add-category-form";
+import { deleteCategory } from "@/app/actions/categories";
 
 export default async function CategoriesPage() {
   const categories =
@@ -185,26 +186,47 @@ function CategorySection({
   )}
 
   {categories.map(
-    (category) => (
-      <div
-        key={category.id}
+  (category) => (
+    <form
+      key={category.id}
+      action={deleteCategory}
+    >
+      <input
+        type="hidden"
+        name="id"
+        value={category.id}
+      />
+
+      <button
+        type="submit"
         className="
-px-3
-py-2
-rounded-xl
-bg-white/5
-border
-border-white/5
-text-sm
-font-medium
-hover:bg-white/10
-transition
-"
+        flex
+        items-center
+        gap-2
+        px-3
+        py-2
+        rounded-xl
+        bg-white/5
+        border
+        border-white/5
+        text-sm
+        font-medium
+        hover:bg-red-500/10
+        hover:border-red-500/20
+        transition
+        "
       >
-        {category.name}
-      </div>
-    )
-  )}
+        <span>
+          {category.name}
+        </span>
+
+        <span className="text-red-500">
+          ×
+        </span>
+      </button>
+    </form>
+  )
+)}
 
 </div>
 

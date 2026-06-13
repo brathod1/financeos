@@ -18,4 +18,6 @@ export interface Investment {
   transaction_id?: string;
 
   created_at: string;
+
+  purchase_date: string;
 }

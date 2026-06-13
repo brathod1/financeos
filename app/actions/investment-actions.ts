@@ -24,6 +24,10 @@ export async function updateInvestment(
   const buyPrice = Number(
     formData.get("buyPrice")
   );
+  const purchaseDate =
+  formData.get(
+    "purchaseDate"
+  ) as string;
 
   const amount =
     units * buyPrice;
@@ -32,11 +36,13 @@ export async function updateInvestment(
     await supabase
       .from("investments")
       .update({
-        name,
-        units,
-        buy_price:
-          buyPrice,
-      })
+  name,
+  units,
+  buy_price:
+    buyPrice,
+  purchase_date:
+    purchaseDate,
+})
       .eq("id", id);
 
   if (error) {
@@ -44,11 +50,13 @@ export async function updateInvestment(
   }
 
   await supabase
-    .from("transactions")
-    .update({
-      title: `Buy ${name}`,
-      amount,
-    })
+  .from("transactions")
+  .update({
+    title: `Buy ${name}`,
+    amount,
+    transaction_date:
+      purchaseDate,
+  })
     .eq(
       "id",
       transactionId

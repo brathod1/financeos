@@ -32,14 +32,14 @@ export async function createInvestment(
     formData.get(
       "symbol"
     ) as string;
-
+const purchaseDate =
+  formData.get(
+    "purchaseDate"
+  ) as string;
   const investmentAmount =
     units * buyPrice;
 
-  const today =
-    new Date()
-      .toISOString()
-      .split("T")[0];
+
 
   const authSupabase =
     await createClient();
@@ -75,7 +75,7 @@ export async function createInvestment(
         "investment",
 
       transaction_date:
-        today,
+  purchaseDate,
     })
     .select()
     .single();
@@ -110,6 +110,9 @@ export async function createInvestment(
 
         transaction_id:
           transaction.id,
+
+          purchase_date:
+  purchaseDate,
       });
 
   if (error) {
