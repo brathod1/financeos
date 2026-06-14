@@ -211,7 +211,7 @@ const [showConfirm, setShowConfirm] =
 
               <input
                 type="number"
-                step="0.0001"
+                step="any"
                 min="0"
                 max={units}
                 value={sellUnits}
