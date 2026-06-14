@@ -162,7 +162,7 @@ const [showConfirm, setShowConfirm] =
   <input
     type="number"
     step="0.01"
-    min="0"
+    min="0.01"
     value={sellPrice}
     onChange={(e) =>
       setSellPrice(
@@ -211,8 +211,8 @@ const [showConfirm, setShowConfirm] =
 
               <input
                 type="number"
-                step="any"
-                min="0"
+                step="0.01"
+                min="0.01"
                 max={units}
                 value={sellUnits}
                 onChange={(e) =>
@@ -247,7 +247,7 @@ const [showConfirm, setShowConfirm] =
               <input
                 type="number"
                 step="0.01"
-                min="0"
+                min="0.01"
                 value={sellAmount}
                 onChange={(e) =>
                   setSellAmount(

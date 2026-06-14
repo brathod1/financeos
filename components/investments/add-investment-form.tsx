@@ -122,7 +122,7 @@ export function AddInvestmentForm({
       <input
   name="units"
   type="number"
-  min="0.0001"
+  min="0.01"
 required
   step="0.01"
   placeholder="Units"
