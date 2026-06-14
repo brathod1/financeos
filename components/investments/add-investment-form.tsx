@@ -1,7 +1,11 @@
 "use client";
 
 import { createInvestment } from "@/app/actions/investments";
-import { useRef, useState } from "react";
+import {
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import { Account } from "@/types/accounts";
 import { Asset } from "@/types/asset";
 import { AssetSearch } from "./asset-search";
@@ -26,6 +30,8 @@ export function AddInvestmentForm({
   useState<Asset | null>(
     null
   );
+  const [isPending, startTransition] =
+  useTransition();
   console.log(
   "ASSETS FORM",
   assets
@@ -33,17 +39,21 @@ export function AddInvestmentForm({
   async function handleSubmit(
   formData: FormData
 ) {
-  await createInvestment(
-    formData
+  startTransition(
+    async () => {
+      await createInvestment(
+        formData
+      );
+
+      formRef.current?.reset();
+
+      setSelectedAsset(
+        null
+      );
+
+      setOpen(false);
+    }
   );
-
-  formRef.current?.reset();
-
-  setOpen(false);
-  console.log(
-  "ASSETS FORM",
-  assets
-);
 }
   return (
     <form
@@ -112,7 +122,8 @@ export function AddInvestmentForm({
       <input
   name="units"
   type="number"
-  min="0"
+  min="0.0001"
+required
   step="0.01"
   placeholder="Units"
   className="w-full bg-zinc-800 rounded-xl p-4"
@@ -121,7 +132,8 @@ export function AddInvestmentForm({
       <input
   name="buyPrice"
   type="number"
-  min="0"
+  min="0.01"
+required
   step="0.01"
   placeholder="Buy Price"
   className="w-full bg-zinc-800 rounded-xl p-4"
@@ -133,6 +145,7 @@ export function AddInvestmentForm({
     selectedAsset?.symbol ??
     ""
   }
+  required
   readOnly
   className="w-full bg-zinc-800 rounded-xl p-4"
 />
@@ -183,11 +196,22 @@ export function AddInvestmentForm({
   </select>
 </div>
       <button
-        type="submit"
-        className="bg-white text-black px-5 py-3 rounded-full"
-      >
-        Add Investment
-      </button>
+  type="submit"
+  disabled={isPending}
+  className="
+    bg-white
+    text-black
+    px-5
+    py-3
+    rounded-full
+    disabled:opacity-50
+    disabled:cursor-not-allowed
+  "
+>
+  {isPending
+    ? "Adding..."
+    : "Add Investment"}
+</button>
     </form>
   );
 }

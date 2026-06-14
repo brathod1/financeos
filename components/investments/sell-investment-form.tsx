@@ -1,6 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import {
+  useState,
+  useTransition,
+} from "react";
 import { sellInvestment } from "@/app/actions/sell-investment";
 import { Account } from "@/types/accounts";
 
@@ -38,16 +41,20 @@ export function SellInvestmentForm({
       .toISOString()
       .split("T")[0]
   );
+const [showConfirm, setShowConfirm] =
+  useState(false);
 
+  const [isPending, startTransition] =
+  useTransition();
   const effectiveUnits =
-    mode === "quantity"
-      ? sellUnits
-      : Number(
-          (
-            sellAmount /
-            currentPrice
-          ).toFixed(4)
-        );
+  mode === "quantity"
+    ? sellUnits
+    : Number(
+        (
+          sellAmount /
+          sellPrice
+        ).toFixed(4)
+      );
 
   const saleValue =
   effectiveUnits *
@@ -68,9 +75,17 @@ export function SellInvestmentForm({
       </summary>
 
       <form
-        action={sellInvestment}
-        className="mt-4 space-y-4"
-      >
+  action={(formData) => {
+    startTransition(
+      async () => {
+        await sellInvestment(
+          formData
+        );
+      }
+    );
+  }}
+  className="mt-4 space-y-4"
+>
         <input
           type="hidden"
           name="symbol"
@@ -213,11 +228,11 @@ export function SellInvestmentForm({
 
             <div className="bg-zinc-800 rounded-xl p-3">
               Amount Received:
-              ₹
-              {(
-                sellUnits *
-                currentPrice
-              ).toFixed(2)}
+₹
+{(
+  sellUnits *
+  sellPrice
+).toFixed(2)}
             </div>
           </>
         )}
@@ -278,52 +293,231 @@ export function SellInvestmentForm({
           )}
         </select>
 
-        <div className="bg-zinc-800 rounded-xl p-4 text-sm space-y-2">
-          <p>
-            Units:
-            {" "}
-            {effectiveUnits.toFixed(
-              4
-            )}
-          </p>
+        <div
+  className="
+  bg-zinc-800
+  rounded-xl
+  p-4
+  border
+  border-zinc-700
+  "
+>
+  <p
+    className="
+    text-xs
+    uppercase
+    tracking-widest
+    text-zinc-500
+    mb-4
+    "
+  >
+    Trade Preview
+  </p>
 
-          <p>
-            Sale Value:
-            ₹
-            {saleValue.toFixed(
-              2
-            )}
-          </p>
+  <div className="space-y-3 text-sm">
 
-          <p>
-            Cost Basis:
-            ₹
-            {costBasis.toFixed(
-              2
-            )}
-          </p>
+    <div className="flex justify-between">
+      <span className="text-zinc-400">
+        Asset
+      </span>
 
-          <p
-            className={
-              profit >= 0
-                ? "text-green-500"
-                : "text-red-500"
-            }
-          >
-            Profit:
-            ₹
-            {profit.toFixed(
-              2
-            )}
-          </p>
-        </div>
+      <span className="font-medium">
+        {symbol}
+      </span>
+    </div>
 
-        <button
-          type="submit"
-          className="w-full bg-red-600 hover:bg-red-700 rounded-xl py-3 font-medium"
+    <div className="flex justify-between">
+      <span className="text-zinc-400">
+        Units
+      </span>
+
+      <span>
+        {effectiveUnits.toFixed(4)}
+      </span>
+    </div>
+
+    <div className="flex justify-between">
+      <span className="text-zinc-400">
+        Sale Price
+      </span>
+
+      <span>
+        ₹{sellPrice.toFixed(2)}
+      </span>
+    </div>
+
+    <div className="flex justify-between">
+      <span className="text-zinc-400">
+        Sale Value
+      </span>
+
+      <span>
+        ₹{saleValue.toFixed(2)}
+      </span>
+    </div>
+
+    <div className="flex justify-between">
+      <span className="text-zinc-400">
+        Cost Basis
+      </span>
+
+      <span>
+        ₹{costBasis.toFixed(2)}
+      </span>
+    </div>
+
+    <div className="border-t border-zinc-700 pt-3 flex justify-between">
+
+      <span className="font-medium">
+        Realized P&L
+      </span>
+
+      <span
+        className={
+          profit >= 0
+            ? "text-green-500 font-semibold"
+            : "text-red-500 font-semibold"
+        }
+      >
+        {profit >= 0
+          ? "+"
+          : ""}
+        ₹
+        {profit.toFixed(2)}
+      </span>
+
+    </div>
+  </div>
+</div>
+
+        {!showConfirm ? (
+  <button
+    type="button"
+    onClick={() =>
+      setShowConfirm(true)
+    }
+    className="
+      w-full
+      bg-red-600
+      hover:bg-red-700
+      rounded-xl
+      py-3
+      font-medium
+    "
+  >
+    Review Sale
+  </button>
+) : (
+  <div
+    className="
+      bg-zinc-900
+      border
+      border-red-500/30
+      rounded-xl
+      p-4
+      space-y-4
+    "
+  >
+    <div>
+      <h4 className="font-semibold">
+        Confirm Sale
+      </h4>
+
+      <p className="text-zinc-400 text-sm mt-1">
+        Please review the details
+        before selling.
+      </p>
+    </div>
+
+    <div className="space-y-2 text-sm">
+
+      <div className="flex justify-between">
+        <span>Asset</span>
+        <span>{symbol}</span>
+      </div>
+
+      <div className="flex justify-between">
+        <span>Units</span>
+        <span>
+          {effectiveUnits.toFixed(4)}
+        </span>
+      </div>
+
+      <div className="flex justify-between">
+        <span>Sale Value</span>
+        <span>
+          ₹{saleValue.toFixed(2)}
+        </span>
+      </div>
+
+      <div className="flex justify-between">
+        <span>Cost Basis</span>
+        <span>
+          ₹{costBasis.toFixed(2)}
+        </span>
+      </div>
+
+      <div className="flex justify-between font-semibold">
+        <span>Profit / Loss</span>
+
+        <span
+          className={
+            profit >= 0
+              ? "text-green-500"
+              : "text-red-500"
+          }
         >
-          Confirm Sell
-        </button>
+          {profit >= 0
+            ? "+"
+            : ""}
+          ₹
+          {profit.toFixed(2)}
+        </span>
+      </div>
+
+    </div>
+
+    <div className="flex gap-3">
+
+      <button
+  type="button"
+  disabled={isPending}
+  onClick={() =>
+    setShowConfirm(false)
+  }
+        className="
+          flex-1
+          border
+          border-zinc-700
+          rounded-xl
+          py-3
+        "
+      >
+        Cancel
+      </button>
+
+      <button
+  type="submit"
+  disabled={isPending}
+  className="
+    flex-1
+    bg-red-600
+    hover:bg-red-700
+    rounded-xl
+    py-3
+    font-medium
+    disabled:opacity-50
+    disabled:cursor-not-allowed
+  "
+>
+  {isPending
+    ? "Selling..."
+    : "Sell Now"}
+</button>
+
+    </div>
+  </div>
+)}
       </form>
     </details>
   );

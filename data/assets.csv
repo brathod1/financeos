@@ -1,0 +1,80 @@
+symbol,name,asset_type,exchange,sector
+RELIANCE,Reliance Industries Ltd,Stock,NSE,Oil & Gas
+TCS,Tata Consultancy Services,Stock,NSE,IT
+INFY,Infosys Ltd,Stock,NSE,IT
+HDFCBANK,HDFC Bank Ltd,Stock,NSE,Banking
+ICICIBANK,ICICI Bank Ltd,Stock,NSE,Banking
+SBIN,State Bank of India,Stock,NSE,Banking
+ITC,ITC Ltd,Stock,NSE,FMCG
+LT,Larsen & Toubro Ltd,Stock,NSE,Engineering
+AXISBANK,Axis Bank Ltd,Stock,NSE,Banking
+KOTAKBANK,Kotak Mahindra Bank Ltd,Stock,NSE,Banking
+NIFTYBEES,Nippon India ETF Nifty BeES,ETF,NSE,ETF
+BANKBEES,Nippon India ETF Bank BeES,ETF,NSE,ETF
+GOLDBEES,Nippon India ETF Gold BeES,ETF,NSE,ETF
+EMBASSY,Embassy Office Parks REIT,REIT,NSE,REIT
+MINDSPACE,Mindspace Business Parks REIT,REIT,NSE,REIT
+BIRET,Brookfield India REIT,REIT,NSE,REIT
+INDIGRID,India Grid Trust,InvIT,NSE,InvIT
+IRBINVIT,IRB InvIT Fund,InvIT,NSE,InvIT
+PGINVIT,PowerGrid Infrastructure Investment Trust,InvIT,NSE,InvIT
+BTC-USD,Bitcoin,Crypto,CRYPTO,Crypto
+ETH-USD,Ethereum,Crypto,CRYPTO,Crypto
+SOL-USD,Solana,Crypto,CRYPTO,Crypto
+BNB-USD,BNB,Crypto,CRYPTO,Crypto
+XRP-USD,XRP,Crypto,CRYPTO,Crypto
+ADANIENT,Adani Enterprises Ltd,Stock,NSE,Conglomerate
+ADANIPORTS,Adani Ports and SEZ Ltd,Stock,NSE,Logistics
+APOLLOHOSP,Apollo Hospitals Enterprise Ltd,Stock,NSE,Healthcare
+ASIANPAINT,Asian Paints Ltd,Stock,NSE,Paints
+BAJAJ-AUTO,Bajaj Auto Ltd,Stock,NSE,Automobile
+BAJFINANCE,Bajaj Finance Ltd,Stock,NSE,Financial Services
+BAJAJFINSV,Bajaj Finserv Ltd,Stock,NSE,Financial Services
+BEL,Bharat Electronics Ltd,Stock,NSE,Defence
+BHARTIARTL,Bharti Airtel Ltd,Stock,NSE,Telecom
+CIPLA,Cipla Ltd,Stock,NSE,Pharmaceuticals
+COALINDIA,Coal India Ltd,Stock,NSE,Mining
+DRREDDY,Dr Reddys Laboratories Ltd,Stock,NSE,Pharmaceuticals
+EICHERMOT,Eicher Motors Ltd,Stock,NSE,Automobile
+GRASIM,Grasim Industries Ltd,Stock,NSE,Cement
+HCLTECH,HCL Technologies Ltd,Stock,NSE,IT
+HDFCLIFE,HDFC Life Insurance Ltd,Stock,NSE,Insurance
+HEROMOTOCO,Hero MotoCorp Ltd,Stock,NSE,Automobile
+HINDALCO,Hindalco Industries Ltd,Stock,NSE,Metals
+HINDUNILVR,Hindustan Unilever Ltd,Stock,NSE,FMCG
+JSWSTEEL,JSW Steel Ltd,Stock,NSE,Steel
+M&M,Mahindra and Mahindra Ltd,Stock,NSE,Automobile
+MARUTI,Maruti Suzuki India Ltd,Stock,NSE,Automobile
+NESTLEIND,Nestle India Ltd,Stock,NSE,FMCG
+NTPC,NTPC Ltd,Stock,NSE,Power
+ONGC,Oil and Natural Gas Corporation Ltd,Stock,NSE,Oil & Gas
+POWERGRID,Power Grid Corporation of India Ltd,Stock,NSE,Power
+SUNPHARMA,Sun Pharmaceutical Industries Ltd,Stock,NSE,Pharmaceuticals
+TATAMOTORS,Tata Motors Ltd,Stock,NSE,Automobile
+TATASTEEL,Tata Steel Ltd,Stock,NSE,Steel
+TECHM,Tech Mahindra Ltd,Stock,NSE,IT
+TITAN,Titan Company Ltd,Stock,NSE,Consumer Goods
+ULTRACEMCO,UltraTech Cement Ltd,Stock,NSE,Cement
+WIPRO,Wipro Ltd,Stock,NSE,IT
+JUNIORBEES,Nippon India ETF Junior BeES,ETF,NSE,ETF
+ITBEES,Nippon India ETF IT BeES,ETF,NSE,ETF
+PSUBANKBEES,Nippon India ETF PSU Bank BeES,ETF,NSE,ETF
+MON100,Motilal Oswal Nasdaq 100 ETF,ETF,NSE,ETF
+SILVERBEES,Nippon India ETF Silver BeES,ETF,NSE,ETF
+CPSEETF,CPSE ETF,ETF,NSE,ETF
+DOGE-USD,Dogecoin,Crypto,CRYPTO,Crypto
+AVAX-USD,Avalanche,Crypto,CRYPTO,Crypto
+LINK-USD,Chainlink,Crypto,CRYPTO,Crypto
+DOT-USD,Polkadot,Crypto,CRYPTO,Crypto
+MATIC-USD,Polygon,Crypto,CRYPTO,Crypto
+
+
+
+
+
+
+
+
+
+
+

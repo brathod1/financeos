@@ -9,6 +9,8 @@ export interface Asset {
 
   exchange: string | null;
 
+  sector: string | null;
+
   is_active: boolean;
 
   created_at: string;

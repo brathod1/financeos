@@ -38,7 +38,55 @@ const purchaseDate =
   ) as string;
   const investmentAmount =
     units * buyPrice;
+if (!name?.trim()) {
+  throw new Error(
+    "Please select an asset"
+  );
+}
 
+if (!symbol?.trim()) {
+  throw new Error(
+    "Please select an asset"
+  );
+}
+
+if (!investmentType?.trim()) {
+  throw new Error(
+    "Invalid asset type"
+  );
+}
+
+if (!accountId?.trim()) {
+  throw new Error(
+    "Please select an account"
+  );
+}
+
+if (
+  !units ||
+  units <= 0
+) {
+  throw new Error(
+    "Units must be greater than 0"
+  );
+}
+
+if (
+  !buyPrice ||
+  buyPrice <= 0
+) {
+  throw new Error(
+    "Buy price must be greater than 0"
+  );
+}
+
+if (
+  !purchaseDate
+) {
+  throw new Error(
+    "Purchase date is required"
+  );
+}
 
 
   const authSupabase =
@@ -54,7 +102,10 @@ const purchaseDate =
       "Not authenticated"
     );
   }
-
+console.log(
+  "CURRENT USER",
+  user.id
+);
   const {
     data: transaction,
     error: transactionError,
@@ -119,7 +170,39 @@ const purchaseDate =
     console.error(error);
     throw error;
   }
+const serverSupabase =
+  await createClient();
 
+const { error: historyError } =
+  await serverSupabase
+    .from(
+      "investment_transactions"
+    )
+    .insert({
+      user_id: user.id,
+
+      symbol,
+
+      name,
+
+      transaction_type:
+        "BUY",
+
+      units,
+
+      price: buyPrice,
+
+      amount:
+        investmentAmount,
+
+      transaction_date:
+        purchaseDate,
+    });
+
+console.log(
+  "BUY HISTORY ERROR",
+  historyError
+);
   revalidatePath(
     "/investments"
   );

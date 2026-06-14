@@ -47,7 +47,10 @@ if (!user) {
     "Not authenticated"
   );
 }
-
+console.log(
+  "CURRENT USER",
+  user.id
+);
   // Validation
   if (!symbol) {
     throw new Error(
@@ -193,6 +196,9 @@ let costBasis = 0;
   const saleAmount =
     sellUnits *
     sellPrice;
+    console.log(
+  "SELL ACTION STARTED"
+);
   const realizedProfit =
   saleAmount - costBasis;
   const transactionDate =
@@ -223,33 +229,42 @@ await supabase
 
     sold_at: transactionDate,
   });
-  const { error } =
-    await supabase
-      .from("transactions")
-      .insert({
-        user_id: user.id,
+  
 
-        title:
-  `Sold ${sellUnits.toFixed(
-    4
-  )} ${symbol.toUpperCase()}`,
+const serverSupabase =
+  await createClient();
 
-        amount:
-          saleAmount,
+const { error: historyError } =
+  await serverSupabase
+    .from(
+      "investment_transactions"
+    )
+    .insert({
+      user_id: user.id,
 
-        account_id:
-          accountId,
+      symbol,
 
-        transaction_type:
-          "investment_sell",
-        
-        transaction_date:
-  transactionDate,
-      });
+      name: symbol,
 
-  if (error) {
-    throw error;
-  }
+      transaction_type:
+        "SELL",
+
+      units: sellUnits,
+
+      price: sellPrice,
+      
+      amount: saleAmount,
+      profit_loss: realizedProfit,
+      transaction_date:
+        transactionDate,
+    });
+
+console.log(
+  "SELL HISTORY ERROR",
+  historyError
+);
+
+
 
   revalidatePath(
     "/investments"

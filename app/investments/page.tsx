@@ -1,9 +1,19 @@
-console.log("INVESTMENTS PAGE");
+
 import { getInvestments } from "@/lib/investments";
 import { AddInvestmentForm } from "@/components/investments/add-investment-form";
 import { getAccounts } from "@/lib/accounts";
+import {
+  getRealizedProfit,
+} from "@/lib/realized-gains";
 import { getAssets }
 from "@/lib/assets";
+import {
+  getInvestmentHistory,
+} from "@/lib/investment-history";
+
+import {
+  InvestmentHistory,
+} from "@/components/investments/investment-history";
 import { EditInvestmentForm } from "@/components/investments/edit-investment-form";
 import { AddInvestmentDialog }
 from "@/components/investments/add-investment-dialog";
@@ -44,6 +54,7 @@ const investments =
       }
     )
   );
+  
 const holdings = Object.values(
   investments.reduce(
     (acc, investment) => {
@@ -101,16 +112,38 @@ const holdings = Object.values(
     >
   )
 );
-console.log(
-  "HOLDINGS",
+holdings.sort(
+  (a, b) =>
+    b.units *
+      b.currentPrice -
+    a.units *
+      a.currentPrice
+);
+const holdingsWithHistory =
+  await Promise.all(
+    holdings.map(
+      async (
+        holding
+      ) => ({
+        ...holding,
+
+        history:
+  await getInvestmentHistory(
+    holding.symbol
+  ),
+      })
+    )
+  );
+  console.log(
+  "HOLDINGS WITH HISTORY",
   JSON.stringify(
-    holdings,
+    holdingsWithHistory,
     null,
     2
   )
 );
 const allocationData =
-  holdings.map(
+  holdingsWithHistory.map(
     (holding) => ({
       name:
         holding.symbol.toUpperCase(),
@@ -156,14 +189,11 @@ const accounts =
   await getAccounts();
   const assets =
   await getAssets();
-  console.log(
-  "ASSETS PAGE",
-  assets.length,
-  assets
-);
+  
 const history =
   await getPortfolioHistory();
-
+const realizedProfit =
+  await getRealizedProfit();
 const totalInvested =
   investments.reduce(
     (sum, investment) =>
@@ -182,13 +212,17 @@ const portfolioValue =
     0
   );
 
-const totalProfitLoss =
+const unrealizedProfit =
   portfolioValue -
   totalInvested;
 
+const totalReturn =
+  unrealizedProfit +
+  realizedProfit;
+
 const portfolioReturn =
   totalInvested > 0
-    ? (totalProfitLoss /
+    ? (totalReturn /
         totalInvested) *
       100
     : 0;
@@ -237,7 +271,7 @@ const portfolioReturn =
     text-sm
     "
   >
-    {holdings.length} Holdings
+    {holdingsWithHistory.length} Holdings
   </span>
 </div>
 
@@ -273,57 +307,77 @@ const portfolioReturn =
       </div>
 
       <div className="mt-8 pt-6 border-t border-zinc-800">
-        <p
-  className="
-  text-zinc-400
-  uppercase
-  tracking-widest
-  text-xs
-  "
->
-  Profit / Loss
-</p>
 
-        <div
-  className="
-  flex
-  flex-col
-  md:flex-row
-  items-start
-  md:items-center
-  gap-3
-  mt-2
-  "
->
-          <p
-  className={`
-text-4xl
-md:text-5xl
-font-bold
-${
-              totalProfitLoss >= 0
-                ? "text-green-500"
-                : "text-red-500"
-            }`}
-          >
-            ₹
-            {totalProfitLoss.toLocaleString()}
-          </p>
+  <div
+    className="
+    grid
+    grid-cols-1
+    md:grid-cols-3
+    gap-6
+    "
+  >
 
-          <div
-  className={`px-4 py-2 rounded-full text-base font-medium ${
-              totalProfitLoss >= 0
-                ? "bg-green-500/10 text-green-500"
-                : "bg-red-500/10 text-red-500"
-            }`}
-          >
-            {portfolioReturn.toFixed(
-              2
-            )}
-            %
-          </div>
-        </div>
-      </div>
+    <div>
+      <p className="text-zinc-500 text-sm">
+        Unrealized Profit
+      </p>
+
+      <p
+        className={`text-2xl font-bold ${
+          unrealizedProfit >= 0
+            ? "text-green-500"
+            : "text-red-500"
+        }`}
+      >
+        ₹
+        {unrealizedProfit.toLocaleString()}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-zinc-500 text-sm">
+        Realized Profit
+      </p>
+
+      <p
+        className={`text-2xl font-bold ${
+          realizedProfit >= 0
+            ? "text-green-500"
+            : "text-red-500"
+        }`}
+      >
+        ₹
+        {realizedProfit.toLocaleString()}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-zinc-500 text-sm">
+        Total Return
+      </p>
+
+      <p
+        className={`text-2xl font-bold ${
+          totalReturn >= 0
+            ? "text-green-500"
+            : "text-red-500"
+        }`}
+      >
+        ₹
+        {totalReturn.toLocaleString()}
+      </p>
+
+      <p className="text-zinc-500 text-sm mt-1">
+        {portfolioReturn.toFixed(
+          2
+        )}
+        %
+      </p>
+    </div>
+
+  </div>
+
+</div>
     </div>
 
     <div>
@@ -336,7 +390,7 @@ ${
   </p>
 </div>
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl">
-      {holdings.length === 0 ? (
+      {holdingsWithHistory.length === 0 ? (
         <div
   className="
   p-6
@@ -358,8 +412,8 @@ ${
   </p>
 </div>
       ) : (
-        holdings.map(
-          (holding) => {
+        holdingsWithHistory.map(
+  (holding) => {
             const avgCost =
   holding.units > 0
     ? holding.invested /
@@ -475,6 +529,27 @@ const returnPercent =
         Current ₹
         {currentValue.toLocaleString()}
       </p>
+
+      <details className="mt-4">
+
+  <summary
+    className="
+    cursor-pointer
+    text-sm
+    text-zinc-400
+    hover:text-white
+    "
+  >
+    View History
+  </summary>
+
+  <InvestmentHistory
+    history={
+  holding.history
+}
+  />
+
+</details>
 <SellInvestmentForm
   symbol={holding.symbol}
   units={holding.units}
