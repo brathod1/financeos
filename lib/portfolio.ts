@@ -1,6 +1,7 @@
 import { getInvestments } from "@/lib/investments";
 import { getCurrentPrice } from "@/lib/market-prices";
 
+
 export async function getPortfolioValue() {
   const investments =
     await getInvestments();

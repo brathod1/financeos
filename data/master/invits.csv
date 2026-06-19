@@ -1,0 +1,5 @@
+symbol,name,asset_type,exchange,sector,currency,fund_house,amfi_code,plan_type,option_type
+INDIGRID,India Grid Trust,InvIT,NSE,InvIT,INR,,,,
+IRBINVIT,IRB InvIT Fund,InvIT,NSE,InvIT,INR,,,,
+PGINVIT,PowerGrid Infrastructure Investment Trust,InvIT,NSE,InvIT,INR,,,,
+NHAIINVIT,NHAI Infrastructure Trust,InvIT,NSE,InvIT,INR,,,,

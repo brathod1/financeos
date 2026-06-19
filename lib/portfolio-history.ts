@@ -24,4 +24,4 @@ export async function getPortfolioHistory() {
       );
 
   return data ?? [];
-}
+} 

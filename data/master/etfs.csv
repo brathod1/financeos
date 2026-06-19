@@ -1,0 +1,10 @@
+symbol,name,asset_type,exchange,sector,currency,fund_house,amfi_code,plan_type,option_type
+NIFTYBEES,Nippon India ETF Nifty BeES,ETF,NSE,ETF,INR,Nippon,,, 
+BANKBEES,Nippon India ETF Bank BeES,ETF,NSE,ETF,INR,Nippon,,,
+GOLDBEES,Nippon India ETF Gold BeES,ETF,NSE,ETF,INR,Nippon,,,
+JUNIORBEES,Nippon India ETF Junior BeES,ETF,NSE,ETF,INR,Nippon,,,
+MON100,Motilal Oswal Nasdaq 100 ETF,ETF,NSE,ETF,INR,Motilal Oswal,,,
+ITBEES,Nippon India ETF Nifty IT,ETF,NSE,ETF,INR,Nippon,,,
+CPSEETF,CPSE ETF,ETF,NSE,ETF,INR,CPSE,,,
+PSUBANKBEES,Nippon India ETF PSU Bank BeES,ETF,NSE,ETF,INR,Nippon,,,
+SILVERBEES,Nippon India ETF Silver BeES,ETF,NSE,ETF,INR,Nippon,,,

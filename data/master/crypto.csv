@@ -1,0 +1,11 @@
+symbol,name,asset_type,exchange,sector,currency,fund_house,amfi_code,plan_type,option_type
+BTC-USD,Bitcoin,Crypto,CRYPTO,Crypto,USD,,,,
+ETH-USD,Ethereum,Crypto,CRYPTO,Crypto,USD,,,,
+SOL-USD,Solana,Crypto,CRYPTO,Crypto,USD,,,,
+BNB-USD,BNB,Crypto,CRYPTO,Crypto,USD,,,,
+XRP-USD,XRP,Crypto,CRYPTO,Crypto,USD,,,,
+DOGE-USD,Dogecoin,Crypto,CRYPTO,Crypto,USD,,,,
+ADA-USD,Cardano,Crypto,CRYPTO,Crypto,USD,,,,
+AVAX-USD,Avalanche,Crypto,CRYPTO,Crypto,USD,,,,
+DOT-USD,Polkadot,Crypto,CRYPTO,Crypto,USD,,,,
+LINK-USD,Chainlink,Crypto,CRYPTO,Crypto,USD,,,,

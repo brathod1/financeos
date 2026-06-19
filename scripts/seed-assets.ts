@@ -30,6 +30,16 @@ interface AssetRow {
   asset_type: string;
   exchange: string;
   sector: string;
+
+  currency?: string;
+
+  fund_house?: string;
+
+  amfi_code?: string;
+
+  plan_type?: string;
+
+  option_type?: string;
 }
 
 async function seedAssets() {
@@ -69,23 +79,37 @@ async function seedAssets() {
       .upsert(
         assets.map(
           (asset) => ({
-            symbol:
-              asset.symbol,
+            
+  symbol: asset.symbol,
 
-            name:
-              asset.name,
+  name: asset.name,
 
-            asset_type:
-              asset.asset_type,
+  asset_type:
+    asset.asset_type,
 
-            exchange:
-  asset.exchange,
+  exchange:
+    asset.exchange,
 
-sector:
-  asset.sector,
+  sector:
+    asset.sector,
 
-is_active: true,
-          })
+  currency:
+    asset.currency || null,
+
+  fund_house:
+    asset.fund_house || null,
+
+  amfi_code:
+    asset.amfi_code || null,
+
+  plan_type:
+    asset.plan_type || null,
+
+  option_type:
+    asset.option_type || null,
+
+  is_active: true,
+})
         ),
         {
           onConflict:
